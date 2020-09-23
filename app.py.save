@@ -5,10 +5,7 @@ from bs4 import BeautifulSoup
 import json
 app = Flask(__name__)
 
-#context = SSL.Context(SSL.SSLv23_METHOD)
-#context.use_privatekey_file('/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
-#context.use_certificate_chain_file('/etc/letsencrypt/archive/biqueirao.xyz/fullchain2.pem')
-#context.use_certificate_file('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem')
+
 
 
   
@@ -70,6 +67,9 @@ def consultaURL(profile_url):
         erroPlayer = False
         return player
 
+context = SSL.Context(SSL.TLSv1_2_METHOD)
+context.use_privatekey_file('/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
+context.use_certificate_chain_file('/etc/letsencrypt/archive/biqueirao.xyz/fullchain2.pem')
+context.use_certificate_file('m')
 if __name__ == '__main__':
-    context = ('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem','/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
-    app.run(host='0.0.0.0',port=443, debug=False,ssl_context=context)
+    app.run(host='0.0.0.0',port=80, ssl_context=context, debug=False)
