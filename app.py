@@ -1,0 +1,70 @@
+from flask import Flask, render_template, request, redirect
+import requests
+from bs4 import BeautifulSoup
+import json
+app = Flask(__name__)
+
+
+
+
+  
+@app.route('/', methods=['POST', 'GET'])
+def busca():
+    if request.method == 'GET':
+        return render_template("index.html")
+    if request.method == 'POST':
+        
+        url_front = request.form['url_busca']
+        if url_front == "":
+            return render_template("index.html")
+        dados_player = consultaURL(url_front)
+        return render_template("index.html", player=dados_player, erro_player=erroPlayer)
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html")
+@app.errorhandler(500)
+def internal_error(e):
+    return render_template("500.html")
+
+
+
+
+def consultaURL(profile_url):
+    session = requests.session()
+    jar = requests.cookies.RequestsCookieJar()
+    jar.set('gclubsess','dd04fda5750445e80c3849e1c7fd78c343075d80')
+    session.cookies = jar
+    consulta = session.get(f'https://gamersclub.com.br/buscar?busca={profile_url}')
+    soup = BeautifulSoup(consulta.text, 'html.parser')
+
+    semconta = soup.find(class_='jumbotron')
+
+    if semconta:
+        global erroPlayer
+        erroPlayer = True
+        return "Conta sem cadastro no site da Gamers Club."
+        
+    else:
+
+        #achar o nivel atual
+        userid = soup.find('div', 'gc-profile-user-id').text
+        name   = soup.find('div', 'gc-profile-user-container').text
+        nivel  = soup.find('span', 'badge').text
+        try:
+            banido = soup.find('div', 'center alert alert-danger').text
+        except:
+            banido = "Não"
+            pass
+
+        player = {
+            "id": userid,
+            "name": name,
+            "lvl": nivel,
+            "isban": banido
+        }
+        erroPlayer = False
+        return player
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0',port=5000, debug=False)
