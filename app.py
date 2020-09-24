@@ -121,4 +121,7 @@ def consulta_url(profile_url):
 
 if __name__ == '__main__':
     context = ('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem','/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
-    app.run(host='0.0.0.0',port=443)#, debug=False, ssl_context=context)
+    #linha para testes
+    #app.run(host='0.0.0.0',port=5000, debug=True,threaded=True)
+    #linha abaixo oficial
+    app.run(host='0.0.0.0',port=443, debug=False, ssl_context=context, threaded=True)
