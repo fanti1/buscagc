@@ -1,15 +1,19 @@
 from flask import Flask, render_template, request, redirect
 from OpenSSL import SSL
-import requests
 from bs4 import BeautifulSoup
-import json
-app = Flask(__name__)
+import requests, json
+import sys
 
+
+app = Flask(__name__)
+#ssl path
 context = SSL.Context(SSL.SSLv23_METHOD)
 context.use_privatekey_file('/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
 context.use_certificate_chain_file('/etc/letsencrypt/archive/biqueirao.xyz/fullchain2.pem')
 context.use_certificate_file('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem')
+context = ('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem','/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
   
+
 @app.route('/', methods=['POST', 'GET'])
 def busca():
     if request.method == 'GET':
@@ -22,27 +26,31 @@ def busca():
         dados_player = consulta_url(url_front)
         return render_template("index.html", player=dados_player, erro_player=erroPlayer)
 
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html")
+
+
 @app.errorhandler(500)
 def internal_error(e):
     return render_template("500.html")
 
+
 def consulta_url(profile_url):
+
     session = requests.session()
     jar = requests.cookies.RequestsCookieJar()
     jar.set('gclubsess','dd04fda5750445e80c3849e1c7fd78c343075d80')
     session.cookies = jar
     consulta = session.get(f'https://gamersclub.com.br/buscar?busca={profile_url}')
     soup = BeautifulSoup(consulta.text, 'html.parser')
-
     semconta = soup.find(class_='jumbotron')
 
     if semconta:
         global erroPlayer
         erroPlayer = True
-        return "Conta sem cadastro no site da Gamers Club."
+        return "Jogador sem cadastro no site da Gamers Club."
     else:
         userid = soup.find('div', 'gc-profile-user-id').text
         name   = soup.find('div', 'gc-profile-user-container').text
@@ -119,9 +127,10 @@ def consulta_url(profile_url):
         erroPlayer = False
         return player
 
+
 if __name__ == '__main__':
-    context = ('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem','/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
-    #linha para testes
-    #app.run(host='0.0.0.0',port=5000, debug=True,threaded=True)
-    #linha abaixo oficial
-    app.run(host='0.0.0.0',port=443, debug=False, ssl_context=context, threaded=True)
+    #tratativa pra executar run certo se tiver no linux ou se tiver no windows testando
+    if sys.platform == 'win32':
+        app.run(host='0.0.0.0',port=5000, debug=True,threaded=True)
+    else:
+        app.run(host='0.0.0.0',port=443, debug=False, ssl_context=context, threaded=True)
