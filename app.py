@@ -111,7 +111,7 @@ def consulta_url(profile_url):
             pass
 
         player = {
-            "id": userid,
+            "id": userid.split(': ')[1],
             "name": name,
             "lvl": NivelSplit[0],
             "isBanned": IsUserBanned,
