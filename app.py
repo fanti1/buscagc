@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect
-from OpenSSL import SSL
+#from OpenSSL import SSL
 from bs4 import BeautifulSoup
 import requests, json
 import sys
@@ -7,11 +7,12 @@ import sys
 
 app = Flask(__name__)
 #ssl path
-context = SSL.Context(SSL.SSLv23_METHOD)
-context.use_privatekey_file('/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
-context.use_certificate_chain_file('/etc/letsencrypt/archive/biqueirao.xyz/fullchain2.pem')
-context.use_certificate_file('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem')
-context = ('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem','/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
+
+# context = SSL.Context(SSL.SSLv23_METHOD)
+# context.use_privatekey_file('/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
+# context.use_certificate_chain_file('/etc/letsencrypt/archive/biqueirao.xyz/fullchain2.pem')
+# context.use_certificate_file('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem')
+# context = ('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem','/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
   
 
 @app.route('/', methods=['POST', 'GET'])
@@ -38,12 +39,15 @@ def internal_error(e):
 
 
 def consulta_url(profile_url):
-
     session = requests.session()
     jar = requests.cookies.RequestsCookieJar()
     jar.set('gclubsess','dd04fda5750445e80c3849e1c7fd78c343075d80')
     session.cookies = jar
     consulta = session.get(f'https://gamersclub.com.br/buscar?busca={profile_url}')
+
+    # player = [] #List to store player things
+    # stats  = [] #List to store player stats
+    
     soup = BeautifulSoup(consulta.text, 'html.parser')
     semconta = soup.find(class_='jumbotron')
 
@@ -111,7 +115,7 @@ def consulta_url(profile_url):
             pass
 
         player = {
-            "id": userid,
+            "id": userid.split(': ')[1],
             "name": name,
             "lvl": NivelSplit[0],
             "isBanned": IsUserBanned,

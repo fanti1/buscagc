@@ -36,7 +36,7 @@
 				{% if player.isBanned == True %}
 				<h3><span class="banido">{{ player.name }}</span></h3>
 				{% else %}
-				<h3><span>{{ player.name }}</span></h3>
+				<h3><a href='https://gamersclub.com.br/jogador/{{ player.id }}' target="_blank" style="text-decoration: none;color: #fff;">{{ player.name }}</a></h3>
 				{% endif %}
 				<span class='numberCircle badge level-{{ player.lvl }}'>{{ player.lvl }}</span>
 				<br>Nível<br>
