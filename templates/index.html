@@ -37,7 +37,7 @@
 
 				<img class="round" src="{{ player.avatar }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/profile-v2/default-user-profile.jpg'" alt="user" />
 				{% if player.isBanned == True %}
-				<h3><span class="banido">{{ player.name }}</span></h3>
+				<h3><a href='https://gamersclub.com.br/jogador/{{ player.id }}' target="_blank" class="banido">{{ player.name }}</a></h3>
 				{% else %}
 				<h3><a href='https://gamersclub.com.br/jogador/{{ player.id }}' target="_blank" style="text-decoration: none;color: #fff;">{{ player.name }}</a></h3>
 				{% endif %}
@@ -167,13 +167,14 @@
 			{% endif %}
 		</div>
 	</div>
-	<footer>
+	<div id="kz" class="logo1" style="">kinz & dex.</div>
+	<!-- <footer>
 		<p>
 			Created by
 			<a target="_blank" href="https://steamcommunity.com/id/8RUNO1">KINZ</a>
 			-
 			<a target="_blank" href="https://steamcommunity.com/id/hypochondriac1">DEX</a>
 		</p>
-	</footer>
+	</footer> -->
 </body>
 </html>
