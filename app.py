@@ -23,7 +23,7 @@ def busca():
         if url_front == "":
             return render_template("index.html")
         dados_player = consulta_url(url_front)
-        return render_template("index.html", player=dados_player, erro_player=erroPlayer, url_front=url_front)
+        return render_template("index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -33,12 +33,25 @@ def page_not_found(e):
 def internal_error(e):
     return render_template("500.html")
 
+
+def getAdmin(url):
+    lista = ['76561198047241875', '8RUNO1', 'hypochondriac1', '76561198888066058']
+    for i in lista:
+        if i in url:
+            print(f"É admin! {i}")
+            return True
+
+
 def consulta_url(profile_url):
     session = requests.session()
     jar = requests.cookies.RequestsCookieJar()
     jar.set('gclubsess','dd04fda5750445e80c3849e1c7fd78c343075d80')
     session.cookies = jar
     consulta = session.get(f'https://gamersclub.com.br/buscar?busca={profile_url}')
+
+    global isAdmin
+    isAdmin = getAdmin(profile_url)
+
     soup = BeautifulSoup(consulta.text, 'html.parser')
     semconta = soup.find(class_='jumbotron')
 
