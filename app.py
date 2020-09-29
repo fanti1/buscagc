@@ -23,7 +23,7 @@ def busca():
         if url_front == "":
             return render_template("index.html")
         dados_player = consulta_url(url_front)
-        return render_template("index.html", player=dados_player, erro_player=erroPlayer)
+        return render_template("index.html", player=dados_player, erro_player=erroPlayer, url_front=url_front)
 
 @app.errorhandler(404)
 def page_not_found(e):

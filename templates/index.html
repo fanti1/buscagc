@@ -38,6 +38,13 @@
 				<img class="round" src="{{ player.avatar }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/profile-v2/default-user-profile.jpg'" alt="user" />
 				{% if player.isBanned == True %}
 				<h3><a href='https://gamersclub.com.br/jogador/{{ player.id }}' target="_blank" class="banido">{{ player.name }}</a></h3>
+				
+				{% if '76561198047241875' or '8RUNO1' or 'hypochondriac1' or '76561198888066058' in url_front %}
+				<h6>SITE ADMIN</h6>
+				{% endif %}
+				
+				
+				
 				{% else %}
 				<h3><a href='https://gamersclub.com.br/jogador/{{ player.id }}' target="_blank" style="text-decoration: none;color: #fff;">{{ player.name }}</a></h3>
 				{% endif %}
@@ -167,7 +174,7 @@
 			{% endif %}
 		</div>
 	</div>
-	<div id="kz" class="logo1" style="">kinz & dex.</div>
+	<div id="kz" class="logo1">kinz & dex.</div>
 	<!-- <footer>
 		<p>
 			Created by
