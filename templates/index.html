@@ -45,7 +45,7 @@
 				
 				{% else %}
 				<h3><a href='https://gamersclub.com.br/jogador/{{ player.id }}' target="_blank" style="text-decoration: none;color: #fff;">{{ player.name }}</a></h3>
-					{% if isAdmin %}
+					{% if isAdmin == True %}
 						<h6>SITE ADMIN</h6>
 					{% endif %}
 				{% endif %}

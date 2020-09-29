@@ -37,7 +37,7 @@ def internal_error(e):
 def getAdmin(url):
     lista = ['76561198047241875', '8RUNO1', 'hypochondriac1', '76561198888066058']
     for i in lista:
-        if i in url:
+        if str(i) in url:
             print(f"É admin! {i}")
             return True
 
