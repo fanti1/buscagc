@@ -36,7 +36,7 @@ def internal_error(e):
 
 def getAdmin(url):
     url = url.lower()
-    lista = ['76561198047241875', '8runo1', 'hypochondriac1', '76561198888066058']
+    lista = ['76561198047241875', 'bruno1', 'hypochondriac1', '76561198888066058']
     for i in lista:
         if str(i) in url:
             print(f"É admin! {i}")
@@ -141,4 +141,6 @@ if __name__ == '__main__':
     if sys.platform == 'win32':
         app.run(host='0.0.0.0',port=5000, debug=True,threaded=True)
     else:
-        app.run(host='0.0.0.0',port=443, debug=False, ssl_context=context, threaded=True)
+        
+        #original start server:
+        app.run(host='0.0.0.0',port=443, debug=False, ssl_context=context)
