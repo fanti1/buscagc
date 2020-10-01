@@ -22,35 +22,30 @@
 			</form>
 			{% if player is defined and erro_player == False %}
 			<div class="card-container animate-bottom">
-				<span title="{{ player.nome_pais }}" class="card-base-country" data-tip-text="{{ player.nome_pais }}"><img src="https://gamersclub.com.br/assets/images/flags/lobby/{{ player.codigo_pais }}"" alt="{{ player.nome_pais }}"></span>
+				<span title="{{ player.country }}" class="card-base-country" data-tip-text="{{ player.country }}"><img src="https://gamersclub.com.br/assets/images/flags/lobby/{{ player.flag }}" alt="{{ player.country }}"></span>
 				{% if player.isBanned == True %}
 					{% if player.motivo_span == 0 %}
-				<span class="racs"> BAN 🐵 </span>
+				<span class="racs">BAN RACISMO</span>
 					{% elif player.motivo_span == 2 %}
-				<span class="pro"> VAC </span>
+				<span class="pro">VAC BAN</span>
 					{% elif player.motivo_span == 3 %}
-				<span class="ban"> BAN AC </span>
+				<span class="ban">BAN AC</span>
 					{% endif %}
 				{% else %}
 				<span class="pro">SEM BAN</span>
 				{% endif %}
-
 				<img class="round" src="{{ player.avatar }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/profile-v2/default-user-profile.jpg'" alt="user" />
 				{% if player.isBanned == True %}
-				<h3><a href='https://gamersclub.com.br/jogador/{{ player.id }}' target="_blank" class="banido">{{ player.name }}</a></h3>
-				
-				
-				
-				
-				
+				<h3><a href='https://gamersclub.com.br/jogador/{{ player.id }}' target="_blank" class="banido">{{ player.name.replace('\n', '') }}</a></h3>
 				{% else %}
-				<h3><a href='https://gamersclub.com.br/jogador/{{ player.id }}' target="_blank" style="text-decoration: none;color: #fff;">{{ player.name }}</a></h3>
-					{% if isAdmin == True %}
-						<h6>SITE ADMIN</h6>
-					{% endif %}
+				<h3><a href='https://gamersclub.com.br/jogador/{{ player.id }}' target="_blank" style="text-decoration: none;color: #fff;">{{ player.name.replace('\n', '') }}</a>
+				{% if isAdmin == True %}
+					<span class="adm">SITE ADMIN</span>
 				{% endif %}
-				<span class='numberCircle badge level-{{ player.lvl }}'>{{ player.lvl }}</span>
-				<br>Nível<br>
+				</h3>
+				{% endif %}
+				<span class='numberCircle badge level-{{ player.lvl }}'><div class="lvl-value" style="font-weight: 900;">{{ player.lvl }}</div></span>
+				<h6>Skill Level</h6>
 				{% if player.isBanned == True %}
 					{% if player.motivo_span != 2 %}
 						<p>MEMBRO BANIDO NA GAMERS CLUB</p>
@@ -170,12 +165,37 @@
 					</div>
 				</div>
 			</div>
-			{% else %}
-			<h3><span>{{ player }}</span></h3>
+			{% elif erro_player == True %}
+			<div class="card-container animate-bottom">
+				{% if player.vac == 1 %}
+				<span class="ban">BAN VAC</span>
+				{% else %}
+				<span class="pro">SEM VAC</span>
+				{% endif %}
+				<img class="round" src="{{ player.avatar }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/profile-v2/default-user-profile.jpg'" alt="user" />
+				{% if player.vac == 1 %}
+				<h3><a class="banido">{{ player.name }}</a></h3>
+				{% else %}
+				<h3><a style="text-decoration: none;color: #fff;">{{ player.name }}</a></h3>
+				{% endif %}
+				<h4>{{ player.error_text }}</h4>
+				<div class="buttons">
+					<button disabled class="primary">
+						{{ player.steamid }}
+					</button>
+					<button disabled class="primary ghost">
+						{{ player.steam64 }}
+					</button>
+				</div>
+				<br>
+			</div>		
 			{% endif %}
 		</div>
 	</div>
 	<div id="kz" class="logo1">kinz & dex.</div>
+	<script>
+		history.pushState({}, null, "/{{steam64orsteamid}}/");
+	</script>
 	<!-- <footer>
 		<p>
 			Created by

@@ -1,4 +1,22 @@
 
+		/* Larger screens */
+		/* @media only screen and (min-width 728px)
+		{
+			.container {
+				zoom: 150%;
+			}
+		}
+
+		Small screens
+		@media only screen and (max-width 600px)
+		{
+			.container {
+				zoom: 125%;
+				min-width: 450px;
+			}
+		} */
+
+		
 		@import url('https://fonts.googleapis.com/css?family=Montserrat');
 	
 		* {
@@ -13,8 +31,7 @@
 
 		.container {
 			padding: 3rem;
-			zoom: 125%;
-			/* width: 400px; */
+    		zoom: 125%;
 		}
 
 		input[type="search"] {
@@ -216,6 +233,16 @@
 			position: absolute;
 			top: 30px;
 			left: 30px;
+		}
+
+		span.adm {
+			color: #fff;
+			background-color: #7cac35;
+			border-radius: 3px;
+			font-size: 14px;
+			font-weight: bold;
+			padding: 3px 7px;
+			margin-left: 5px;
 		}
 	
 		.ban {
