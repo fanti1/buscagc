@@ -242,7 +242,9 @@
 			font-size: 14px;
 			font-weight: bold;
 			padding: 3px 7px;
-			margin-left: 5px;
+			position: absolute;
+			top: 30px;
+			right: 30px;
 		}
 	
 		.ban {

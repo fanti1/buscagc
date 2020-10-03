@@ -33,6 +33,7 @@
 					{% endif %}
 				{% else %}
 				<span class="pro">SEM BAN</span>
+				
 				{% endif %}
 				<img class="round" src="{{ player.avatar }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/profile-v2/default-user-profile.jpg'" alt="user" />
 				{% if player.isBanned == True %}
@@ -61,10 +62,10 @@
 					</div>
 					<br>
 				{% endif %}
-				<span style="font-size: 15px;">{{ player.motivo }}</span>
+				<span style="font-size: 15px">{{ player.motivo }}</span>
 				{% endif %}
 				<div class="skills">
-					<h6 style="padding-left: 15px;">Estatísticas não estão disponíveis no momento.</h6>
+					<h6 style="padding-left: 15px;text-align: center;">Estatísticas não estão disponíveis no momento.</h6>
 					<div class="StatsBoxStatsList StatsBoxStatsList--Competitive" style="grid-area: span 2 / span 5 / auto / auto; grid-template-columns: repeat(4, 1fr);">
 						<div class="StatsBoxPlayerInfo">
 						<div class="StatsBoxPlayerInfoItem">
@@ -169,6 +170,7 @@
 			<div class="card-container animate-bottom">
 				{% if player.vac == 1 %}
 				<span class="ban">BAN VAC</span>
+				{% elif player.vac == 4 %}
 				{% else %}
 				<span class="pro">SEM VAC</span>
 				{% endif %}
@@ -179,6 +181,7 @@
 				<h3><a style="text-decoration: none;color: #fff;">{{ player.name }}</a></h3>
 				{% endif %}
 				<h4>{{ player.error_text }}</h4>
+				{% if player.vac != 4 %}
 				<div class="buttons">
 					<button disabled class="primary">
 						{{ player.steamid }}
@@ -187,6 +190,8 @@
 						{{ player.steam64 }}
 					</button>
 				</div>
+				<br>
+				{% endif %}
 				<br>
 			</div>		
 			{% endif %}
