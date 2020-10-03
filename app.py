@@ -23,7 +23,6 @@ def isInt(n):
     except ValueError:
        return False
 
-@app.route( '/<steamid>/', methods=['GET'] )
 def get_profile(steamid):
     sixtyfourid = None
     if not isInt(steamid) or len(str(steamid)) != 17:
@@ -39,24 +38,27 @@ def get_profile(steamid):
     if sixtyfourid is None:
        return ""
 
+    return sixtyfourid
+
+@app.route( '/<steamid>/', methods=['GET'] )
+def fuckoff(steamid):
     if request.method == 'GET':
-        dados_player = consulta_url( f"http://steamcommunity.com/profiles/{sixtyfourid}" )
-        return render_template( "index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin )
+        steam64 = get_profile( steamid )
+        dados_player = consulta_url( f"http://steamcommunity.com/profiles/{steam64}" )
+        return render_template( "index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid=steam64 )
   
 @app.route('/', methods=['POST', 'GET'])
 def busca():
     if request.method == 'GET':
-        #return render_template("index.html") #testando
-        ############################# mostrando a conta do fallen ao conectar ####################################
-        dados_player = consulta_url("http://steamcommunity.com/profiles/76561197960690195")                                 #steam 64 do fallen na url
-        return render_template("index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid="76561197960690195")
+        return render_template("fallen.html")
 
     if request.method == 'POST':
         url_front = request.form['url_busca']
         if url_front == "":
             return render_template("index.html")
-        dados_player = consulta_url(url_front)                                                             # redirecionar sem mudar de pagina.
-        return render_template("index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid=url_front.split("/")[4] )
+        dados_player = consulta_url(url_front)
+        steamid64 = get_profile(url_front.split("/")[4])                                                   # redirecionar sem mudar de pagina.
+        return render_template("index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid=steamid64 )
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -71,7 +73,6 @@ def getAdmin(url):
     lista = ['76561198047241875', 'bruno1', 'hypochondriac1', '76561198888066058']
     for i in lista:
         if str(i) in url:
-            #print(f"É admin! {i}")
             return True
 
 def consulta_url( profile_url ):
@@ -95,7 +96,7 @@ def consulta_url( profile_url ):
 
         # seleciona todos os p strong dentro do jumbotron 
         items = [item.next_sibling for item in soup.select(".jumbotron p strong")]
-        
+          
         # pega o nome do player
         player[u'name'] = items[0]
 
@@ -106,13 +107,18 @@ def consulta_url( profile_url ):
         player[u'steam64'] = items[2]
 
         # pega o vac 
-        player[u'vac'] = int(items[3])
+        if items[3].isspace( ):
+            player[u'vac'] = int(4)
+            player[u'error_text'] = 'Jogador sem cadastro na steam!'
+
+        else:
+            player[u'vac'] = int(items[3])
+            player[u'error_text'] = 'Jogador sem cadastro no site da Gamers Club.'
 
         # pega o avatar do jogador.
         player[u'avatar'] = soup.find( 'p' ).img['src']
 
         # cria a msg do erro.
-        player[u'error_text'] = 'Jogador sem cadastro no site da Gamers Club.'
 
         return player
     else:
@@ -205,7 +211,7 @@ def consulta_url( profile_url ):
 if __name__ == '__main__':
     #tratativa pra executar run certo se tiver no linux ou se tiver no windows testando
     if sys.platform == 'win32':
-        app.run(host='0.0.0.0',port=5000, debug=True,threaded=True)
+        app.run(host='0.0.0.0',port=5000, debug=True, threaded=True)
     else:
         #original start server:
         app.run(host='0.0.0.0',port=443, debug=False, ssl_context=context)
