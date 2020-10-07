@@ -3,7 +3,6 @@
 		/* @media only screen and (min-width 728px)
 		{
 			.container {
-				zoom: 150%;
 			}
 		}
 
@@ -11,13 +10,105 @@
 		@media only screen and (max-width 600px)
 		{
 			.container {
-				zoom: 125%;
 				min-width: 450px;
 			}
 		} */
 
+		/* Small screens */
+		@media screen and (max-width: 768px)
+		{
+			.container {
+				padding: 3rem 1rem 0rem 1rem !important;
+				zoom: 100%;
+				justify-content:center;
+			}
+
+			input[type="search"]{
+				font-size: 14px !important;
+			}
+
+			label {
+				width: 50%;
+			}
+
+			#kz {
+				height: 50px;
+				padding: 18px 40px 0px;
+			}
+
+			.card-container .pro, .ban, .racs {
+				font-size: 10px !important;
+				/* left: 10px !important; */
+			}
+
+			.card-container .adm {
+				font-size: 10px !important;
+				/* right: 10px !important; */
+			}
+
+		}
+
+		.tooltip {
+			position: relative;
+			display: inline-block;
+		}
+
+		.tooltip .tooltiptext {
+			visibility: hidden;
+			width: 120px;
+			background-color: black;
+			color: #fff;
+			text-align: center;
+			border-radius: 6px;
+			padding: 10px 0;
+			
+			/* Position the tooltip */
+			position: absolute;
+			z-index: 1;
+			font-size: 14px;
+			margin: 10px;
+		}
+		
+		.tooltip:hover .tooltiptext {
+			visibility: visible;
+		}
+
+		/* NEW LVL SHIT */
+
+		.new-badge {
+			padding: 0;
+			width: 40px;
+			height: 40px;
+			display: inline-block;
+			position: relative;
+			cursor: default;
+		}
+
+		.lvl-value {
+			font-family: Poppins;
+			font-size: 20px;
+			font-weight: 700;
+			color: #fff;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 40px;
+			height: 40px;
+			text-align: center;
+			line-height: 40px;
+			text-shadow: 1px 1px 1px rgba(0,0,0,.4);
+			z-index: 45;
+		}
+	
+		.new-level-20 {
+			border-radius: 50%;
+			-webkit-animation-name: redPulse;
+			-webkit-animation-duration: 1.5s;
+			-webkit-animation-iteration-count: infinite;
+		}
 		
 		@import url('https://fonts.googleapis.com/css?family=Montserrat');
+		@import url('https://fonts.googleapis.com/css?family=Poppins');
 	
 		* {
 			box-sizing: border-box;
@@ -31,7 +122,7 @@
 
 		.container {
 			padding: 3rem;
-    		zoom: 125%;
+			zoom: 125%;
 		}
 
 		input[type="search"] {
@@ -178,7 +269,7 @@
 	
 		body {
 			background-color: #28223F;
-			font-family: Montserrat, sans-serif;
+			font-family: Poppins, Montserrat, sans-serif;
 			
 			display: flex;
 			align-items: center;
@@ -187,6 +278,7 @@
 	
 			/* min-height: 50vh; */
 			margin: 0;
+			-webkit-font-smoothing: antialiased;
 		}
 	
 		.banido {
@@ -209,6 +301,8 @@
 			font-size: 14px;
 			line-height: 21px;
 		}
+
+
 	
 		.card-container {
 			background-color: #231E39;
@@ -224,8 +318,8 @@
 		}
 	
 		.card-container .pro {
-			color: #231E39;
-			background-color: #FEBB0B;
+			color: #fff;
+			background-color: rebeccapurple;
 			border-radius: 3px;
 			font-size: 14px;
 			font-weight: bold;
@@ -235,9 +329,9 @@
 			left: 30px;
 		}
 
-		span.adm {
+		.card-container .adm {
 			color: #fff;
-			background-color: #7cac35;
+			background-color: #154D28;
 			border-radius: 3px;
 			font-size: 14px;
 			font-weight: bold;
@@ -247,7 +341,7 @@
 			right: 30px;
 		}
 	
-		.ban {
+		.card-container .ban {
 			color: #fff;
 			background-color: red;
 			border-radius: 3px;
@@ -259,7 +353,7 @@
 			left: 30px;
 		}
 	
-		.racs {
+		.card-container .racs {
 			color: #fff;
 			background-color: black;
 			border-radius: 3px;
@@ -729,9 +823,6 @@
 			}
 		}
 	
-	
-	
-		/*! CSS Used from: https://gamersclub.com.br/assets/css/app.min.css?v=335 ; media=all */
 	.StatsBox *{box-sizing:border-box;-webkit-text-stroke:0;-moz-text-stroke:0;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
 	.StatsBoxStatsList {display: grid;}
 	.StatsBoxStatsList--Competitive .StatsBoxPlayerInfo{padding-left:16px;}
@@ -743,8 +834,13 @@
 	.StatsBoxPlayerInfoItem__name{color:hsla(0,0%,100%,.5);text-transform:uppercase;font-weight:500;}
 	.StatsBoxPlayerInfoItem__value{font-size:2rem;line-height:26px;font-family:Teko,sans-serif;margin-top:8px;}
 
-	/*! CSS Used from: https://pnrhns.ga/style.css */
 	#kz{height:100px;width:100%;padding:25px 40px 10px;bottom:0;left:0;text-align:center;color:white;}
+
+	#kz > a {
+		text-decoration: none;
+		color: #fff;
+	}
+
 	*{box-sizing:border-box;}
 	@media all{
 	*,::after,::before{box-sizing:border-box;}
@@ -757,10 +853,3 @@
 	::-webkit-scrollbar-thumb{background:grey;}
 	/*! CSS Used from: Embedded */
 	.logo1{padding:0 10px;color:#333;font-size:32px;font-family:'Comfortaa', Helvetica, sans-serif;cursor:default;}
-	/*! CSS Used fontfaces */
-	@font-face{font-family:'Comfortaa';font-style:normal;font-weight:400;src:url(https://fonts.gstatic.com/s/comfortaa/v29/1Pt_g8LJRfWJmhDAuUsSQamb1W0lwk4S4WjMDr4fIA9c.woff2) format('woff2');unicode-range:U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;}
-	@font-face{font-family:'Comfortaa';font-style:normal;font-weight:400;src:url(https://fonts.gstatic.com/s/comfortaa/v29/1Pt_g8LJRfWJmhDAuUsSQamb1W0lwk4S4WjMDrcfIA9c.woff2) format('woff2');unicode-range:U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;}
-	@font-face{font-family:'Comfortaa';font-style:normal;font-weight:400;src:url(https://fonts.gstatic.com/s/comfortaa/v29/1Pt_g8LJRfWJmhDAuUsSQamb1W0lwk4S4WjMDrAfIA9c.woff2) format('woff2');unicode-range:U+0370-03FF;}
-	@font-face{font-family:'Comfortaa';font-style:normal;font-weight:400;src:url(https://fonts.gstatic.com/s/comfortaa/v29/1Pt_g8LJRfWJmhDAuUsSQamb1W0lwk4S4WjMDrwfIA9c.woff2) format('woff2');unicode-range:U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;}
-	@font-face{font-family:'Comfortaa';font-style:normal;font-weight:400;src:url(https://fonts.gstatic.com/s/comfortaa/v29/1Pt_g8LJRfWJmhDAuUsSQamb1W0lwk4S4WjMDr0fIA9c.woff2) format('woff2');unicode-range:U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;}
-	@font-face{font-family:'Comfortaa';font-style:normal;font-weight:400;src:url(https://fonts.gstatic.com/s/comfortaa/v29/1Pt_g8LJRfWJmhDAuUsSQamb1W0lwk4S4WjMDrMfIA.woff2) format('woff2');unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;}

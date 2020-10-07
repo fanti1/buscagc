@@ -3,10 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>GamersClub BAN Checker</title>
+	<title>GamersClub BAN Checker {{ player.name }}</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 	<link rel="shortcut icon" href="https://hackertyper.net/img/favicon.ico">
+	<link href="https://fonts.googleapis.com/css?family=Poppins|Comfortaa|Open+Sans" rel="stylesheet">
+
 	<!-- adsense lul -->
 	<script data-ad-client="ca-pub-1348364283847032" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
@@ -16,7 +18,7 @@
 			<form action="/" method="post" class="search-form form">
 				<label>
 					<input title="Você deve pesquisar por SteamID ou Steam URL." type="search" class="search-field" placeholder="Procure por SteamID ou Steam URL" name="url_busca"
-						pattern="^https?://(?:www\.)?steamcommunity\.com/(id/([^/\s]*)|profiles/([^/\s]*))/?" required size="50"/>
+						pattern="^https?://(?:www\.)?steamcommunity\.com/(id/([^/\s]*)|profiles/([^/\s]*))/?" required size=50/>
 				</label>
 				<input type="submit" class="search-submit btn" value="&#xf002" />
 			</form>
@@ -27,7 +29,7 @@
 					{% if player.motivo_span == 0 %}
 				<span class="racs">BAN RACISMO</span>
 					{% elif player.motivo_span == 2 %}
-				<span class="pro">VAC BAN</span>
+				<span class="ban">VAC BAN</span>
 					{% elif player.motivo_span == 3 %}
 				<span class="ban">BAN AC</span>
 					{% endif %}
@@ -41,11 +43,18 @@
 				{% else %}
 				<h3><a href='https://gamersclub.com.br/jogador/{{ player.id }}' target="_blank" style="text-decoration: none;color: #fff;">{{ player.name.replace('\n', '') }}</a>
 				{% if isAdmin == True %}
-					<span class="adm">SITE ADMIN</span>
+					<div class="tooltip adm">ADMIN<span class="tooltiptext">Site ADMIN</span></div>
 				{% endif %}
 				</h3>
 				{% endif %}
-				<span class='numberCircle badge level-{{ player.lvl }}'><div class="lvl-value" style="font-weight: 900;">{{ player.lvl }}</div></span>
+				<span class="new-badge new-level-{{ player.lvl }}" style="
+					background-image: url(https://gamersclub.com.br/assets/images/level/{{player.lvl}}.svg);
+					background-repeat: no-repeat;
+					background-position: center center;
+					background-size: cover;">
+				<div class="lvl-value">{{ player.lvl }}</div>
+				</span>
+				<!-- <span class='numberCircle level-{{ player.lvl }}'><div class="lvl-value" style="font-weight: 900;">{{ player.lvl }}</div></span> -->
 				<h6>Skill Level</h6>
 				{% if player.isBanned == True %}
 					{% if player.motivo_span != 2 %}
@@ -62,7 +71,7 @@
 					</div>
 					<br>
 				{% endif %}
-				<span style="font-size: 15px">{{ player.motivo }}</span>
+				<span style="font-size: 12px">{{ player.reason }}</span>
 				{% endif %}
 				<div class="skills">
 					<h6 style="padding-left: 15px;text-align: center;">Estatísticas não estão disponíveis no momento.</h6>
@@ -197,17 +206,9 @@
 			{% endif %}
 		</div>
 	</div>
-	<div id="kz" class="logo1">kinz & dex.</div>
+	<div id="kz" class="logo1"><a href="/76561198047241875/">kinz</a> & <a href="/76561198888066058/" >dex</a></div>
 	<script>
 		history.pushState({}, null, "/{{steam64orsteamid}}/");
 	</script>
-	<!-- <footer>
-		<p>
-			Created by
-			<a target="_blank" href="https://steamcommunity.com/id/8RUNO1">KINZ</a>
-			-
-			<a target="_blank" href="https://steamcommunity.com/id/hypochondriac1">DEX</a>
-		</p>
-	</footer> -->
 </body>
 </html>
