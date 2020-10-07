@@ -9,6 +9,7 @@
 	<link rel="shortcut icon" href="https://hackertyper.net/img/favicon.ico">
 	<link href="https://fonts.googleapis.com/css?family=Teko|Poppins|Comfortaa|Open+Sans" rel="stylesheet">
 
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
 	<!-- adsense lul -->
 	<script data-ad-client="ca-pub-1348364283847032" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
@@ -71,6 +72,14 @@
 					<br>
 				{% endif %}
 				<span style="font-size: 12px">{{ player.reason }}</span>
+				<!-- Target -->
+				<textarea id="bar" text-hidden="true">MEMBRO BANIDO NA GAMERS CLUB em {{ player.data_ban }} até {{ player.banido_ate }}! Motivo: {{ player.reason }}</textarea>
+
+				<!-- Trigger -->
+				</br>
+				<button id="copy-button" style="margin-top: 5px;padding: 5px;" class="primary ghost" data-clipboard-action="copy" data-clipboard-target="#bar">
+					<i class="fa fa-clipboard" aria-hidden="true"></i> Clique para copiar
+				</button>
 				{% endif %}
 				<div class="skills">
 					{% if player_stats is not defined %}
@@ -124,6 +133,16 @@
 	<div id="kz" class="logo1"><a href="/76561198047241875/">kinz</a> & <a href="/76561198888066058/" >dex</a></div>
 	<script>
 		history.pushState({}, null, "/{{steam64orsteamid}}/");
+
+		var clipboardArranque = new ClipboardJS('#copy-button');
+		clipboardArranque.on('success', function(e) {
+			e.trigger.innerHTML = '<i class="fa fa-check" aria-hidden="true"></i> Copiado!';
+			setTimeout(function() {
+				e.trigger.innerHTML = '<i class="fa fa-clipboard" aria-hidden="true"></i> Clique para copiar';
+			}, 2000);
+			e.clearSelection();
+		});
+
 	</script>
 </body>
 </html>

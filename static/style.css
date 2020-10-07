@@ -73,6 +73,13 @@
 			visibility: visible;
 		}
 
+		[text-hidden="true"] {
+			opacity: 0;
+			position: absolute;
+			z-index: -9999;
+			pointer-events: none;
+		}
+
 		/* NEW LVL SHIT */
 
 		.new-badge {
