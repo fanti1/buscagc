@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 	<link rel="shortcut icon" href="https://hackertyper.net/img/favicon.ico">
-	<link href="https://fonts.googleapis.com/css?family=Poppins|Comfortaa|Open+Sans" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Teko|Poppins|Comfortaa|Open+Sans" rel="stylesheet">
 
 	<!-- adsense lul -->
 	<script data-ad-client="ca-pub-1348364283847032" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -35,7 +35,6 @@
 					{% endif %}
 				{% else %}
 				<span class="pro">SEM BAN</span>
-				
 				{% endif %}
 				<img class="round" src="{{ player.avatar }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/profile-v2/default-user-profile.jpg'" alt="user" />
 				{% if player.isBanned == True %}
@@ -74,104 +73,20 @@
 				<span style="font-size: 12px">{{ player.reason }}</span>
 				{% endif %}
 				<div class="skills">
+					{% if player_stats is not defined %}
 					<h6 style="padding-left: 15px;text-align: center;">Estatísticas não estão disponíveis no momento.</h6>
-					<div class="StatsBoxStatsList StatsBoxStatsList--Competitive" style="grid-area: span 2 / span 5 / auto / auto; grid-template-columns: repeat(4, 1fr);">
+					{% endif %}
+					<div class="StatsBoxStatsList StatsBoxStatsList--Lasts" style="grid-area: span 2 / span 5 / auto / auto; grid-template-columns: repeat(4, 1fr);">
+					{% for stats in player_stats %}
 						<div class="StatsBoxPlayerInfo">
-						<div class="StatsBoxPlayerInfoItem">
-							<div class="StatsBoxPlayerInfoItem__Content">
-								<div class="StatsBoxPlayerInfoItem__name">KDR</div>
-								<div class="StatsBoxPlayerInfoItem__value">0</div>
+							<div class="StatsBoxPlayerInfoItem">
+								<div class="StatsBoxPlayerInfoItem__Content">
+									<div class="StatsBoxPlayerInfoItem__name">{{stats.stat}}</div>
+									<div class="StatsBoxPlayerInfoItem__value">{{stats.value}}</div>
+								</div>
 							</div>
 						</div>
-						</div>
-						<div class="StatsBoxPlayerInfo">
-						<div class="StatsBoxPlayerInfoItem">
-							<div class="StatsBoxPlayerInfoItem__Content">
-								<div class="StatsBoxPlayerInfoItem__name">ADR</div>
-								<div class="StatsBoxPlayerInfoItem__value">0</div>
-							</div>
-						</div>
-						</div>
-						<div class="StatsBoxPlayerInfo">
-						<div class="StatsBoxPlayerInfoItem">
-							<div class="StatsBoxPlayerInfoItem__Content">
-								<div class="StatsBoxPlayerInfoItem__name">Matou</div>
-								<div class="StatsBoxPlayerInfoItem__value">0</div>
-							</div>
-						</div>
-						</div>
-						<div class="StatsBoxPlayerInfo">
-						<div class="StatsBoxPlayerInfoItem">
-							<div class="StatsBoxPlayerInfoItem__Content">
-								<div class="StatsBoxPlayerInfoItem__name">Morreu</div>
-								<div class="StatsBoxPlayerInfoItem__value">0</div>
-							</div>
-						</div>
-						</div>
-						<div class="StatsBoxPlayerInfo">
-						<div class="StatsBoxPlayerInfoItem">
-							<div class="StatsBoxPlayerInfoItem__Content">
-								<div class="StatsBoxPlayerInfoItem__name">KAST%</div>
-								<div class="StatsBoxPlayerInfoItem__value">0%</div>
-							</div>
-						</div>
-						</div>
-						<div class="StatsBoxPlayerInfo">
-						<div class="StatsBoxPlayerInfoItem">
-							<div class="StatsBoxPlayerInfoItem__Content">
-								<div class="StatsBoxPlayerInfoItem__name">Multi Kills</div>
-								<div class="StatsBoxPlayerInfoItem__value">0</div>
-							</div>
-						</div>
-						</div>
-						<div class="StatsBoxPlayerInfo">
-						<div class="StatsBoxPlayerInfoItem">
-							<div class="StatsBoxPlayerInfoItem__Content">
-								<div class="StatsBoxPlayerInfoItem__name">First kills</div>
-								<div class="StatsBoxPlayerInfoItem__value">0</div>
-							</div>
-						</div>
-						</div>
-						<div class="StatsBoxPlayerInfo">
-						<div class="StatsBoxPlayerInfoItem">
-							<div class="StatsBoxPlayerInfoItem__Content">
-								<div class="StatsBoxPlayerInfoItem__name">Clutches</div>
-								<div class="StatsBoxPlayerInfoItem__value">0</div>
-							</div>
-						</div>
-						</div>
-						<div class="StatsBoxPlayerInfo">
-						<div class="StatsBoxPlayerInfoItem">
-							<div class="StatsBoxPlayerInfoItem__Content">
-								<div class="StatsBoxPlayerInfoItem__name">HS%</div>
-								<div class="StatsBoxPlayerInfoItem__value">0%</div>
-							</div>
-						</div>
-						</div>
-						<div class="StatsBoxPlayerInfo">
-						<div class="StatsBoxPlayerInfoItem">
-							<div class="StatsBoxPlayerInfoItem__Content">
-								<div class="StatsBoxPlayerInfoItem__name">Precisão%</div>
-								<div class="StatsBoxPlayerInfoItem__value">0%</div>
-							</div>
-						</div>
-						</div>
-						<div class="StatsBoxPlayerInfo">
-						<div class="StatsBoxPlayerInfoItem">
-							<div class="StatsBoxPlayerInfoItem__Content">
-								<div class="StatsBoxPlayerInfoItem__name">Bombas pla.</div>
-								<div class="StatsBoxPlayerInfoItem__value">0</div>
-							</div>
-						</div>
-						</div>
-						<div class="StatsBoxPlayerInfo">
-						<div class="StatsBoxPlayerInfoItem">
-							<div class="StatsBoxPlayerInfoItem__Content">
-								<div class="StatsBoxPlayerInfoItem__name">Bombas def.</div>
-								<div class="StatsBoxPlayerInfoItem__value">0</div>
-							</div>
-						</div>
-						</div>
+					{% endfor %}
 					</div>
 				</div>
 			</div>
