@@ -84,10 +84,11 @@ def get_stats( userid ):
     stats = session.get( f'https://gamersclub.com.br/api/box/history/{userid}' )
     player_s = []
 
-    for entry in stats.json()['stat']:
-        case = {'stat': entry['stat'], 'value': entry['value'] }
-        player_s.append(case)
-
+    if 'stat' in stats.json():
+        for entry in stats.json()['stat']:
+            case = {'stat': entry['stat'], 'value': entry['value'] }
+            player_s.append(case)
+    
     return player_s
 
 def consulta_url( profile_url ):
