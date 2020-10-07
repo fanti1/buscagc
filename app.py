@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect
-from OpenSSL import SSL
+#from OpenSSL import SSL
 from bs4 import BeautifulSoup
 import requests, json
 import sys
@@ -7,14 +7,18 @@ import sys
 app = Flask(__name__)
 
 #ssl path
-context = SSL.Context(SSL.SSLv23_METHOD)
-context.use_privatekey_file('/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
-context.use_certificate_chain_file('/etc/letsencrypt/archive/biqueirao.xyz/fullchain2.pem')
-context.use_certificate_file('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem')
-context = ('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem','/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
+# context = SSL.Context(SSL.SSLv23_METHOD)
+# context.use_privatekey_file('/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
+# context.use_certificate_chain_file('/etc/letsencrypt/archive/biqueirao.xyz/fullchain2.pem')
+# context.use_certificate_file('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem')
+# context = ('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem','/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
 
 # steam api pra mudar de steam id para steam64
 steamapikey = "FDBB490D0187D0AA68E36B5C28CC2657"
+session = requests.session()
+jar = requests.cookies.RequestsCookieJar()
+jar.set( 'gclubsess','dd04fda5750445e80c3849e1c7fd78c343075d80' )
+session.cookies = jar
 
 def isInt(n):
     try:
@@ -45,7 +49,7 @@ def fuckoff(steamid):
     if request.method == 'GET':
         steam64 = get_profile( steamid )
         dados_player = consulta_url( f"http://steamcommunity.com/profiles/{steam64}" )
-        return render_template( "index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid=steam64 )
+        return render_template( "index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid=steam64, player_stats=player_stats )
   
 @app.route('/', methods=['POST', 'GET'])
 def busca():
@@ -58,7 +62,7 @@ def busca():
             return render_template("index.html")
         dados_player = consulta_url(url_front)
         steamid64 = get_profile(url_front.split("/")[4])                                                   # redirecionar sem mudar de pagina.
-        return render_template("index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid=steamid64 )
+        return render_template("index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid=steamid64, player_stats=player_stats )
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -75,15 +79,21 @@ def getAdmin(url):
         if str(i) in url:
             return True
 
-def consulta_url( profile_url ):
-    session = requests.session()
-    jar = requests.cookies.RequestsCookieJar()
-    jar.set( 'gclubsess','dd04fda5750445e80c3849e1c7fd78c343075d80' )
-    session.cookies = jar
+def get_stats( userid ):
+    stats = session.get( f'https://gamersclub.com.br/api/box/history/{userid}' )
+    player_s = []
 
+    for entry in stats.json()['stat']:
+        case = {'stat': entry['stat'], 'value': entry['value'] }
+        player_s.append(case)
+
+    return player_s
+
+def consulta_url( profile_url ):
     player = {} # cria uma lista
     global erroPlayer
     global isAdmin
+    global player_stats
     isAdmin = getAdmin(profile_url)
 
     page = session.get( f'https://gamersclub.com.br/buscar?busca={profile_url}' ) #http://steamcommunity.com/profiles/76561197960690195 steam id do fallen
@@ -126,6 +136,9 @@ def consulta_url( profile_url ):
         # pega a id do player. 
         userid = soup.find( 'div', 'gc-profile-user-id' ).get_text().split(": ")[1]
         player[u'id'] = userid
+
+        # pega o stats do player 
+        player_stats = get_stats( userid )
 
         # pega o nome do player
         name = soup.find('div', 'gc-profile-user-container').get_text()
