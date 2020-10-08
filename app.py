@@ -1,24 +1,63 @@
 from flask import Flask, render_template, request, redirect
-from OpenSSL import SSL
+#from OpenSSL import SSL
 from bs4 import BeautifulSoup
 import requests, json
-import sys
+import sys, re
 
 app = Flask(__name__)
 
 #ssl path
-context = SSL.Context(SSL.SSLv23_METHOD)
-context.use_privatekey_file('/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
-context.use_certificate_chain_file('/etc/letsencrypt/archive/biqueirao.xyz/fullchain2.pem')
-context.use_certificate_file('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem')
-context = ('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem','/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
+# context = SSL.Context(SSL.SSLv23_METHOD)
+# context.use_privatekey_file('/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
+# context.use_certificate_chain_file('/etc/letsencrypt/archive/biqueirao.xyz/fullchain2.pem')
+# context.use_certificate_file('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem')
+# context = ('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem','/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
 
 # steam api pra mudar de steam id para steam64
 steamapikey = "FDBB490D0187D0AA68E36B5C28CC2657"
 session = requests.session()
 jar = requests.cookies.RequestsCookieJar()
-jar.set( 'gclubsess','dd04fda5750445e80c3849e1c7fd78c343075d80' )
+jar.set( 'gclubsess','52a532c1fc2b17cab854eb25e7aac1ea95d3e2c3' ) #08.10.20
 session.cookies = jar
+
+@app.route( '/profiles/<steamid>/', methods=['GET'] )
+def fuckoff(steamid):
+    if request.method == 'GET':
+        steam64 = get_profile( steamid )
+        dados_player = consulta_url( f"http://steamcommunity.com/profiles/{steam64}" )
+        return render_template( "index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid=steam64, player_stats=player_stats )
+
+@app.route( '/search/', methods = [ 'GET', 'POST' ] )
+def search_mult( ):
+    if request.method == 'GET':
+        return render_template( "multi.html" )
+
+    if request.method == 'POST':
+        url_front = request.form['content']
+        grab_players = init( url_front )
+        return render_template("index2.html", players=grab_players, erro_player=erroPlayer, isAdmin=isAdmin )
+  
+@app.route('/', methods=['POST', 'GET'])
+def busca():
+    if request.method == 'GET':
+        stats_fallen = get_stats(94)
+        return render_template("fallen.html", player_stats=stats_fallen)
+
+    if request.method == 'POST':
+        url_front = request.form['url_busca']
+        if url_front == "":
+            return render_template("index.html")
+        dados_player = consulta_url(url_front)
+        steamid64 = get_profile(url_front.split("/")[4])                                                   # redirecionar sem mudar de pagina.
+        return render_template("index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid=steamid64, player_stats=player_stats )
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html")
+
+@app.errorhandler(500)
+def internal_error(e):
+    return render_template("500.html")
 
 def isInt(n):
     try:
@@ -44,34 +83,26 @@ def get_profile(steamid):
 
     return sixtyfourid
 
-@app.route( '/<steamid>/', methods=['GET'] )
-def fuckoff(steamid):
-    if request.method == 'GET':
-        steam64 = get_profile( steamid )
-        dados_player = consulta_url( f"http://steamcommunity.com/profiles/{steam64}" )
-        return render_template( "index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid=steam64, player_stats=player_stats )
-  
-@app.route('/', methods=['POST', 'GET'])
-def busca():
-    if request.method == 'GET':
-        stats_fallen = get_stats(94)
-        return render_template("fallen.html", player_stats=stats_fallen)
+def steamid_to_64bit( steamid ):
+    steam64id = 76561197960265728 # I honestly don't know where
+                                    # this came from, but it works...
+    id_split = steamid.split(":")
+    steam64id += int(id_split[2]) * 2 # again, not sure why multiplying by 2...
+    if id_split[1] == "1":
+        steam64id += 1
+    return steam64id
 
-    if request.method == 'POST':
-        url_front = request.form['url_busca']
-        if url_front == "":
-            return render_template("index.html")
-        dados_player = consulta_url(url_front)
-        steamid64 = get_profile(url_front.split("/")[4])                                                   # redirecionar sem mudar de pagina.
-        return render_template("index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid=steamid64, player_stats=player_stats )
+def init( text ):
+    p = re.compile('STEAM_[0-5]:[01]:\d+')
+    steamids = p.findall(text)
+    players = []
 
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template("404.html")
+    for steamid in steamids:
+        #transforma em steamid64
+        steam64 = steamid_to_64bit( steamid )
+        players.append(consulta_url( f"http://steamcommunity.com/profiles/{steam64}" ))
 
-@app.errorhandler(500)
-def internal_error(e):
-    return render_template("500.html")
+    return players
 
 def getAdmin(url):
     url = url.lower()
@@ -88,7 +119,9 @@ def get_stats( userid ):
         for entry in stats.json()['stat']:
             case = {'stat': entry['stat'], 'value': entry['value'] }
             player_s.append(case)
-    
+    else:
+        player_s.append( "error" )
+
     return player_s
 
 def consulta_url( profile_url ):
@@ -122,7 +155,6 @@ def consulta_url( profile_url ):
         if items[3].isspace( ):
             player[u'vac'] = int(4)
             player[u'error_text'] = 'Jogador sem cadastro na steam!'
-
         else:
             player[u'vac'] = int(items[3])
             player[u'error_text'] = 'Jogador sem cadastro no site da Gamers Club.'
@@ -145,6 +177,9 @@ def consulta_url( profile_url ):
         # pega o nome do player
         name = soup.find('div', 'gc-profile-user-container').get_text()
         player[u'name'] = name
+
+        steam = soup.find( 'a', 'Button Button--lg Button--social Button--steam')['href']
+        player[u'steam'] = steam.split("profiles/")[1]
 
         # verifica se a classe gc-profile-featured-box existe
         class_box = soup.find( 'div', class_='gc-profile-featured-box' )

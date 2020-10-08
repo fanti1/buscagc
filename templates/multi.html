@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>GamersClub BAN Checker</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+	<link rel="shortcut icon" href="https://hackertyper.net/img/favicon.ico">
+	<link href="https://fonts.googleapis.com/css?family=Teko|Poppins|Comfortaa|Open+Sans" rel="stylesheet">
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+	<!-- adsense lul -->
+	<script data-ad-client="ca-pub-1348364283847032" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+<body>
+	<div class="wrapper">
+        <div class="container">
+			<section class="section">
+				<h1 class="title" style="color:#fff;">Multiple search</h1>
+				<p style="color: #7eb760;">Type in console 'status' when you play (MM, FACEIT, other) and paste content below!</p>
+				<p></p>
+				<form method="post" action="">
+					<textarea class="textarea" required name="content" style="width: 100%; height: 200px; color: gray;" placeholdernl="# userid name uniqueid connected ping loss state rate
+# 23 2 &quot;RANDOM NICK #1&quot; STEAM_1:0:14372359 04:43 69 0 active 786432
+# 24 3 &quot;RANDOM NICK #2&quot; STEAM_1:0:93519764 04:41 86 0 active 786432
+# 25 4 &quot;RANDOM NICK #3&quot; STEAM_1:1:41991239 04:38 76 0 active 786432
+# 38 5 &quot;RANDOM NICK #4&quot; STEAM_1:1:112446396 03:37 94 0 active 786432
+# 40 6 &quot;RANDOM NICK #5&quot; STEAM_1:0:37709745 03:03 60 0 active 786432
+# 39 7 &quot;RANDOM NICK #6&quot; STEAM_1:1:92410050 03:33 78 0 active 786432
+# 37 8 &quot;RANDOM NICK #7&quot; STEAM_1:0:58391317 03:56 67 0 active 786432
+# 35 9 &quot;RANDOM NICK #8&quot; STEAM_1:0:37130163 04:08 93 0 active 786432
+# 41 10 &quot;RANDOM NICK #9&quot; STEAM_1:0:81875618 01:06 64 0 active 786432
+# 36 14 &quot;RANDOM NICK #10&quot; STEAM_1:0:39420559 04:08 48 0 active 786432
+#end"># userid name uniqueid connected ping loss state rate
+# 23 2 "RANDOM NICK #1" STEAM_1:0:14372359 04:43 69 0 active 786432
+# 24 3 "RANDOM NICK #2" STEAM_1:0:93519764 04:41 86 0 active 786432
+# 25 4 "RANDOM NICK #3" STEAM_1:1:41991239 04:38 76 0 active 786432
+# 38 5 "RANDOM NICK #4" STEAM_1:1:112446396 03:37 94 0 active 786432
+# 40 6 "RANDOM NICK #5" STEAM_1:0:37709745 03:03 60 0 active 786432
+# 39 7 "RANDOM NICK #6" STEAM_1:1:92410050 03:33 78 0 active 786432
+# 37 8 "RANDOM NICK #7" STEAM_1:0:58391317 03:56 67 0 active 786432
+# 35 9 "RANDOM NICK #8" STEAM_1:0:37130163 04:08 93 0 active 786432
+# 41 10 "RANDOM NICK #9" STEAM_1:0:81875618 01:06 64 0 active 786432
+# 36 14 "RANDOM NICK #10" STEAM_1:0:39420559 04:08 48 0 active 786432
+#end
+				</textarea>
+						<div class="actions"><input type="submit" class="button is-primary" value="Search!"></div>
+					</form>
+				<p></p>
+				</section>
+			
+		</div>
+	</div>
+	<div id="kz" class="logo1"><a href="/76561198047241875/">kinz</a> & <a href="/76561198888066058/" >dex</a></div>
+	<script>
+		$ = jQuery;
+		$(document).ready(function() {
+				handleFocus = function(){
+				var $this = $(this);
+				if($this.val() === $this.attr('placeholdernl')){
+					$this.val('');
+					$this.css('color', '');
+				}
+			};
+
+			handleBlur = function(){
+				var $this = $(this);
+				if($this.val() == ''){
+					$this.val($this.attr('placeholdernl'))
+					$this.css('color', 'gray');
+				}    
+			};
+
+			$('textarea[placeholdernl]').each(function(){
+				var $this = $(this),
+					value = $this.val(),
+					placeholder = $this.attr('placeholder');
+				$this.attr('placeholdernl', value ? value : placeholder);
+				$this.val('');
+				$this.focus(handleFocus).blur(handleBlur).trigger('blur');
+			});
+		});
+
+	</script>
+</body>
+</html>
