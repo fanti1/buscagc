@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>GamersClub BAN Checker</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+	<link rel="shortcut icon" href="https://hackertyper.net/img/favicon.ico">
+	<link href="https://fonts.googleapis.com/css?family=Teko|Poppins|Comfortaa|Open+Sans" rel="stylesheet">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+	<!-- adsense lul -->
+	<script data-ad-client="ca-pub-1348364283847032" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+<body>
+	<div class="wrapper">
+        <div class="container">
+			<form action="/" method="post" class="search-form form">
+				<label>
+					<input title="Você deve pesquisar por SteamID ou Steam URL." type="search" class="search-field" placeholder="Procure por SteamID ou Steam URL" name="url_busca"
+						pattern="^https?://(?:www\.)?steamcommunity\.com/(id/([^/\s]*)|profiles/([^/\s]*))/?" required size=50/>
+				</label>
+				<input type="submit" class="search-submit btn" value="&#xf002" />
+            </form>
+        </div>
+	</div>
+    <div class="page-list">
+    {% for player in players %}
+        {% if player.error_text %}
+        <div class="card-container1 animate-bottom" style="height: 218px;">
+            <img class="round" src="{{ player.avatar }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/profile-v2/default-user-profile.jpg'" alt="user" />
+            {% if player.vac == 1 %}
+            <h3 style="margin-top: 100px;margin-bottom: 0px;"><a class="banido">{{ player.name }}</a></h3>
+            {% else %}
+            <h3 style="margin-top: 100px;margin-bottom: 0px;"><a style="text-decoration: none;color: #fff;">{{ player.name }}</a></h3>
+            {% endif %}
+            <h4>{{ player.error_text }}</h4>
+            <br>
+        </div>
+        {% else %}
+        <div class="card-container1 animate-bottom">
+            <span title="{{ player.country }}" class="card-base-country" data-tip-text="{{ player.country }}"><img src="https://gamersclub.com.br/assets/images/flags/lobby/{{ player.flag }}" alt="{{ player.country }}"></span>
+            <img class="round" src="{{ player.avatar }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/profile-v2/default-user-profile.jpg'" alt="user" />
+            {% if player.isBanned == True %}
+            <h3><a href='/profiles/{{ player.steam }}/' target="_blank" class="banido">{{ player.name.replace('\n', '') }}</a></h3>
+            {% else %} 
+            <h3><a href='/profiles/{{ player.steam }}/' target="_blank" style="text-decoration: none;color: #fff;">{{ player.name.replace('\n', '') }}</a></h3>
+            {% endif %}
+            <span class="new-badge new-level-{{ player.lvl }}" style="
+                background-image: url(https://gamersclub.com.br/assets/images/level/{{player.lvl}}.svg);
+                background-repeat: no-repeat;
+                background-position: center center;
+                background-size: cover;">
+            <div class="lvl-value">{{ player.lvl }}</div>
+            </span>
+            <h6>Skill Level</h6>
+        </div>
+        {% endif %}
+    {% endfor %}
+    </div>
+    <style>
+        .page-list {
+            margin: 0 auto;
+            width: calc(100% - 150px);
+            padding: 50px 30px;
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(6,1fr);
+            grid-gap: 55px 20px;
+            grid-auto-flow: dense;
+            align-items: start;
+            min-height: 700px;
+        }
+
+        .round {
+			width: 125px;
+			height: 125px;
+			display: block;
+			position: absolute;
+			top: -35px;
+			left: 50%;
+			transform: translateX(-50%);
+			border-radius: 50%;
+			/* padding: 7px; */
+            border: solid 2px #92aa00;
+        }
+
+        .card-container1 {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+
+			border-radius: 5px;
+			box-shadow: 0px 10px 20px -10px rgba(0,0,0,0.75);
+			color: #B3B8CD;
+			padding-top: 30px;
+			position: relative;
+			max-width: 100%;
+			text-align: center;
+			margin-top: 50px;
+		}
+
+    </style>
+	<div id="kz" class="logo1"><a href="/profiles/76561198047241875/">kinz</a> & <a href="/profiles/76561198888066058/" >dex</a></div>
+</body>
+</html>

@@ -1990,7 +1990,6 @@ env/Scripts/python.exe
 env/Scripts/pythonw.exe
 env/Scripts/symilar.exe
 .vscode/settings.json
-templates/index2.html
 env/Lib/site-packages/pip/_vendor/vendor.txt
 env/Lib/site-packages/pip/_vendor/toml/tz.py
 env/Lib/site-packages/pip/_vendor/toml/ordered.py
