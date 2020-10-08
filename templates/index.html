@@ -73,7 +73,7 @@
 				{% endif %}
 				<span style="font-size: 12px">{{ player.reason }}</span>
 				<!-- Target -->
-				<textarea id="bar" text-hidden="true">MEMBRO BANIDO NA GAMERS CLUB em {{ player.data_ban }} até {{ player.banido_ate }}! Motivo: {{ player.reason }}</textarea>
+				<textarea id="bar" text-hidden="true">MEMBRO BANIDO NA GAMERS CLUB{% if player.data_ban %} em {{ player.data_ban }} até {{ player.banido_ate }}!{% endif %} Motivo: {{ player.reason }}</textarea>
 
 				<!-- Trigger -->
 				</br>
@@ -82,7 +82,7 @@
 				</button>
 				{% endif %}
 				<div class="skills">
-					{% if player_stats is not defined %}
+					{% if 'error' in player_stats %}
 					<h6 style="padding-left: 15px;text-align: center;">Estatísticas não estão disponíveis no momento.</h6>
 					{% endif %}
 					<div class="StatsBoxStatsList StatsBoxStatsList--Lasts" style="grid-area: span 2 / span 5 / auto / auto; grid-template-columns: repeat(4, 1fr);">

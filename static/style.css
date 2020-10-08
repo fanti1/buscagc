@@ -46,6 +46,13 @@
 				/* right: 10px !important; */
 			}
 
+			[text-hidden="true"] {
+				opacity: 0;
+				position: absolute;
+				z-index: -9999;
+				pointer-events: none;
+			}
+
 		}
 
 		.tooltip {
