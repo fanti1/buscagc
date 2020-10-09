@@ -61,3 +61,20 @@
 189.80.158.62 - - [30/Sep/2020 19:06:04] "[37mPOST / HTTP/1.1[0m" 200 -
 189.80.158.62 - - [30/Sep/2020 19:06:08] "[37mPOST / HTTP/1.1[0m" 200 -
 189.80.158.62 - - [30/Sep/2020 19:06:27] "[37mPOST / HTTP/1.1[0m" 200 -
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: off
+ * Running on https://0.0.0.0:443/ (Press CTRL+C to quit)
+189.80.158.62 - - [09/Oct/2020 16:45:32] "[37mGET / HTTP/1.1[0m" 200 -
+189.80.158.62 - - [09/Oct/2020 16:45:32] "[37mGET /static/style.css HTTP/1.1[0m" 200 -
+189.80.158.62 - - [09/Oct/2020 16:45:38] "[37mPOST / HTTP/1.1[0m" 200 -
+189.80.158.62 - - [09/Oct/2020 16:46:38] "[37mPOST /search HTTP/1.1[0m" 200 -
+201.74.202.124 - - [09/Oct/2020 16:47:29] "[37mGET / HTTP/1.1[0m" 200 -
+201.74.202.124 - - [09/Oct/2020 16:47:29] "[37mGET /static/style.css HTTP/1.1[0m" 200 -
+189.80.158.62 - - [09/Oct/2020 16:48:12] "[37mGET /profiles/76561198888066058/ HTTP/1.1[0m" 200 -
+201.74.202.124 - - [09/Oct/2020 16:48:41] "[37mPOST /search HTTP/1.1[0m" 200 -
+189.80.158.62 - - [09/Oct/2020 16:48:51] "[37mPOST / HTTP/1.1[0m" 200 -
+201.74.202.124 - - [09/Oct/2020 16:49:29] "[37mGET /profiles/76561198034526054/ HTTP/1.1[0m" 200 -
+189.80.158.62 - - [09/Oct/2020 16:50:08] "[37mPOST /search HTTP/1.1[0m" 200 -
