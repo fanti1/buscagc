@@ -27,11 +27,8 @@ def fuckoff(steamid):
         dados_player = consulta_url( f"http://steamcommunity.com/profiles/{steam64}" )
         return render_template( "index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid=steam64, player_stats=player_stats )
 
-@app.route( '/search/', methods = [ 'GET', 'POST' ] )
+@app.route('/search', methods=['POST'])
 def search_mult( ):
-    if request.method == 'GET':
-        return render_template( "multi.html" )
-
     if request.method == 'POST':
         url_front = request.form['content']
         grab_players = init( url_front )
@@ -92,13 +89,13 @@ def steamid_to_64bit( steamid ):
         steam64id += 1
     return steam64id
 
+# quase ctz q tem q ser aqui o multiprocessing demora mais ou menos 36 segundos pra pegar todas as infos de 13 steamids
 def init( text ):
     p = re.compile('STEAM_[0-5]:[01]:\d+')
     steamids = p.findall(text)
     players = []
 
     for steamid in steamids:
-        #transforma em steamid64
         steam64 = steamid_to_64bit( steamid )
         players.append(consulta_url( f"http://steamcommunity.com/profiles/{steam64}" ))
 
