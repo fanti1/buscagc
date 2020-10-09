@@ -77,26 +77,27 @@
 
 				<!-- Trigger -->
 				</br>
-				<button id="copy-button" style="margin-top: 5px;padding: 5px;" class="primary ghost" data-clipboard-action="copy" data-clipboard-target="#bar">
+				<button id="copy-button" style="margin-top: 5px;padding: 5px;cursor: pointer;" class="primary ghost" data-clipboard-action="copy" data-clipboard-target="#bar">
 					<i class="fa fa-clipboard" aria-hidden="true"></i> Clique para copiar
 				</button>
 				{% endif %}
 				<div class="skills">
 					{% if 'error' in player_stats %}
 					<h6 style="padding-left: 15px;text-align: center;">Estatísticas não estão disponíveis no momento.</h6>
-					{% endif %}
+					{% else %}
 					<div class="StatsBoxStatsList StatsBoxStatsList--Lasts" style="grid-area: span 2 / span 5 / auto / auto; grid-template-columns: repeat(4, 1fr);">
-					{% for stats in player_stats %}
-						<div class="StatsBoxPlayerInfo">
-							<div class="StatsBoxPlayerInfoItem">
-								<div class="StatsBoxPlayerInfoItem__Content">
-									<div class="StatsBoxPlayerInfoItem__name">{{stats.stat}}</div>
-									<div class="StatsBoxPlayerInfoItem__value">{{stats.value}}</div>
+						{% for stats in player_stats %}
+							<div class="StatsBoxPlayerInfo">
+								<div class="StatsBoxPlayerInfoItem">
+									<div class="StatsBoxPlayerInfoItem__Content">
+										<div class="StatsBoxPlayerInfoItem__name">{{stats.stat}}</div>
+										<div class="StatsBoxPlayerInfoItem__value">{{stats.value}}</div>
+									</div>
 								</div>
 							</div>
-						</div>
-					{% endfor %}
+						{% endfor %}
 					</div>
+					{% endif %}
 				</div>
 			</div>
 			{% elif erro_player == True %}
