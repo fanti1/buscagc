@@ -259,6 +259,6 @@ if __name__ == '__main__':
     #tratativa pra executar run certo se tiver no linux ou se tiver no windows testando
     if sys.platform == 'win32':
         app.run(host='0.0.0.0',port=5000, debug=True, threaded=True)
-    #else:
+    else:
         #original start server:
         app.run(host='0.0.0.0',port=443, debug=False, ssl_context=context)
