@@ -2233,3 +2233,4 @@ env/Lib/site-packages/pool/util/langhelpers.py
 env/Lib/site-packages/pool/util/queue.py
 templates/multi.html
 templates/multi.html
+*.html
