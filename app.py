@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect
-#from OpenSSL import SSL
+from OpenSSL import SSL
 from bs4 import BeautifulSoup
 import requests, json
 import sys, re
@@ -7,11 +7,11 @@ import sys, re
 app = Flask(__name__)
 
 #ssl path
-# context = SSL.Context(SSL.SSLv23_METHOD)
-# context.use_privatekey_file('/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
-# context.use_certificate_chain_file('/etc/letsencrypt/archive/biqueirao.xyz/fullchain2.pem')
-# context.use_certificate_file('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem')
-# context = ('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem','/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
+context = SSL.Context(SSL.SSLv23_METHOD)
+context.use_privatekey_file('/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
+context.use_certificate_chain_file('/etc/letsencrypt/archive/biqueirao.xyz/fullchain2.pem')
+context.use_certificate_file('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem')
+context = ('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem','/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
 
 # steam api pra mudar de steam id para steam64
 steamapikey = "FDBB490D0187D0AA68E36B5C28CC2657"
