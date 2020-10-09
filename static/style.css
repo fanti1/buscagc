@@ -135,7 +135,7 @@
 		}
 
 		.container {
-			padding: 3rem;
+			padding: 2rem 3rem;
 			zoom: 125%;
 		}
 
@@ -158,6 +158,7 @@
 		form.search-form {
 			display: flex;
 			justify-content: center;
+			padding-bottom: 5px;
 		}
 
 		label {
@@ -183,6 +184,12 @@
 			outline: none;
 		}
 
+		.textarea { resize: none; }
+
+		.textarea:focus{
+			outline: none;
+		}
+
 		input.search-submit {
 			height: 31px;
 			margin: 0;
@@ -192,6 +199,7 @@
 			border-top-right-radius: 0.25rem;
 			border-bottom-right-radius: 0.25rem;
 			font-family: "Font Awesome 5 Free";
+			content: '\f002';
 			font-size: 1rem;
 		}
 
@@ -866,6 +874,8 @@
 	:disabled{pointer-events:none!important;}
 	}
 	::-webkit-scrollbar{width:0px;}
-	::-webkit-scrollbar-thumb{background:grey;}
+	/* ::-webkit-scrollbar-thumb{background:grey;} */
 	/*! CSS Used from: Embedded */
 	.logo1{padding:0 10px;color:#333;font-size:32px;font-family:'Comfortaa', Helvetica, sans-serif;cursor:default;}
+
+

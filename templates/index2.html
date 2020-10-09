@@ -15,7 +15,8 @@
 <body>
 	<div class="wrapper">
         <div class="container">
-			<h1 class="title" style="color:#fff;">Pesquisa múltipla</h1>
+			<section class="section" id="mut" style="display: none;">
+				<h1 class="title" style="color:#fff;">Pesquisa múltipla</h1>
 				<p style="color: #7eb760;padding-bottom: 5px;margin-bottom: 0px !important;">Digite 'status' no console ao jogar (MM, FACEIT, outro) e cole o conteúdo abaixo!</p>
 				<form method="post" action="{{ url_for('search_mult') }}">
 					<textarea class="textarea" required name="content" style="width: 100%; height: 200px; color: gray;border-radius: 5px;" placeholdernl="# userid name uniqueid connected ping loss state rate
@@ -41,8 +42,9 @@
 # 41 10 "RANDOM NICK #9" STEAM_1:0:81875618 01:06 64 0 active 786432
 # 36 14 "RANDOM NICK #10" STEAM_1:0:39420559 04:08 48 0 active 786432
 #end</textarea>
-						<div class="actions"><input type="submit" class="button is-primary" value="Search!"></div>
+						<div class="actions"><input type="submit" class="button is-primary" value="Buscar!"></div>
 					</form>
+				<p></p>
 			</section>
 			<section class="section" id="teste" style="display: block;">
 				<form action="/" method="post" class="search-form form">
@@ -71,7 +73,7 @@
         </div>
         {% else %}
         <div class="card-container1 animate-bottom">
-            <span title="{{ player.country }}" class="card-base-country" data-tip-text="{{ player.country }}"><img src="https://gamersclub.com.br/assets/images/flags/lobby/{{ player.flag }}" alt="{{ player.country }}"></span>
+            <span title="{{ player.country }}" class="card-base-country" data-tip-text="{{ player.country }}"><img src="https://gamersclub.com.br/assets/images/flags/lobby/{{ player.flag }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/flags/lobby/br.png'" alt="{{ player.country }}"></span>
             <img class="round" src="{{ player.avatar }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/profile-v2/default-user-profile.jpg'" alt="user" />
             {% if player.isBanned == True %}
             <h3><a href='/profiles/{{ player.steam }}/' target="_blank" class="banido">{{ player.name.replace('\n', '') }}</a></h3>
@@ -94,7 +96,7 @@
         .page-list {
             margin: 0 auto;
             width: calc(100% - 150px);
-            padding: 50px 30px;
+            padding: 0 30px 35px;
             position: relative;
             display: grid;
             grid-template-columns: repeat(5,1fr);
@@ -166,7 +168,7 @@
 
 		$( '#change' ).click( function( ) {
 			$(this).text((i, t) => t == 'PESQUISAR MINHA PARTIDA' ? 'PESQUISAR SÓ UM' : 'PESQUISAR MINHA PARTIDA');
-			$('#mut, #teste, .page-list').toggle();
+			$('#teste, #mut, .page-list').toggle();
 		});
 
 	</script>
