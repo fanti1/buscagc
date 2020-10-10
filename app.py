@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect
-#from OpenSSL import SSL
+from OpenSSL import SSL
 from bs4 import BeautifulSoup
 import requests
 import json
@@ -247,11 +247,16 @@ def consulta_url(profile_url, steamids = 'False'):
 
         player[u'isBanned'] = is_user_banned
 
-        if 'False' in steamids: # nao quero que salve os players buscados no multi search
-            with open('cache/buscas_recentes.txt', 'a') as json_file:
-                json_file.write(json.dumps(player))
-                json_file.write(",")
-                json_file.close()
+        # nao quero que salve os players buscados no multi search
+        if 'False' in steamids: 
+            steamchecker = open('cache/buscas_recentes.txt', 'r').read()
+            qwert = re.search(f"{player['steam']}", steamchecker)
+
+            if not qwert:
+                with open('cache/buscas_recentes.txt', 'a') as json_file:
+                    json_file.write(json.dumps(player))
+                    json_file.write(",")
+                    json_file.close()
     
         return player
 
