@@ -68,6 +68,10 @@ def isInt(n):
     except ValueError:
         return False
 
+def read_hash(hashid):
+    with open( f'cache/{hashid}.txt') as f:
+        data = json.load(f)
+    return data
 
 def get_profile(steamid):
     sixtyfourid = None
@@ -242,8 +246,14 @@ def consulta_url(profile_url, steamids = 'False'):
             is_user_banned = False
 
         player[u'isBanned'] = is_user_banned
-        return player
 
+        if 'False' in steamids: # nao quero que salve os players buscados no multi search
+            with open('cache/buscas_recentes.txt', 'a') as json_file:
+                json_file.write(json.dumps(player))
+                json_file.write(",")
+                json_file.close()
+    
+        return player
 
 if __name__ == '__main__':
     # tratativa pra executar run certo se tiver no linux ou se tiver no windows testando
