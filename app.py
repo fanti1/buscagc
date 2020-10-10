@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request, redirect
-from OpenSSL import SSL
+#from OpenSSL import SSL
 from bs4 import BeautifulSoup
 import requests
 import json
 import sys
 import re
-import multiprocessing
+import concurrent.futures
 
 app = Flask(__name__)
 
@@ -97,20 +97,25 @@ def steamid_to_64bit(steamid):
         steam64id += 1
     return steam64id
 
-# quase ctz q tem q ser aqui o multiprocessing demora mais ou menos 36 segundos pra pegar todas as infos de 13 steamids
-
-
 def get_multi_profiles(text):
-    p = re.compile('STEAM_[0-5]:[01]:\d+')
+    p = re.compile(r'\STEAM_[0-5]:[01]:\d+')
     steamids = p.findall(text)
+    l_steamid = []
     players = []
 
     for steamid in steamids:
-        steam64 = steamid_to_64bit(steamid)
-        players.append(consulta_url(
-            f"http://steamcommunity.com/profiles/{steam64}"))
+        l_steamid.append(steamid_to_64bit(steamid))
 
-    return players
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future_to_url = {executor.submit(consulta_url, url, "True"): url for url in l_steamid}
+        for future in concurrent.futures.as_completed(future_to_url):
+            url = future_to_url[future]
+            try:
+                players.append(future.result())
+            except Exception as exc:
+                print('%r generated an exception: %s' % (url, exc))
+    
+        return players
 
 
 def getAdmin(url):
@@ -136,15 +141,19 @@ def get_stats(userid):
     return player_s
 
 
-def consulta_url(profile_url):
-    player = {}  # cria uma lista
-    global erroPlayer
+def consulta_url(profile_url, steamids = 'False'):
     global isAdmin
+    global erroPlayer
     global player_stats
-    isAdmin = getAdmin(profile_url)
+    player = {}
 
-    # http://steamcommunity.com/profiles/76561197960690195 steam id do fallen
-    page = session.get(f'https://gamersclub.com.br/buscar?busca={profile_url}')
+    if 'True' in steamids:
+        page = session.get( f'https://gamersclub.com.br/buscar?busca=http://steamcommunity.com/profiles/{profile_url}', stream = True )
+        isAdmin = False
+    else:
+        page = session.get( f'https://gamersclub.com.br/buscar?busca={profile_url}' )
+        isAdmin = getAdmin(profile_url)
+
     soup = BeautifulSoup(page.text, "html.parser")
 
     # a classe jumbotron só aparece quando o jogador nao tem conta.
@@ -152,20 +161,12 @@ def consulta_url(profile_url):
     if has_account:
         erroPlayer = True
 
-        # seleciona todos os p strong dentro do jumbotron
-        items = [item.next_sibling for item in soup.select(
-            ".jumbotron p strong")]
+        items = [item.next_sibling for item in soup.select(".jumbotron p strong")]
 
-        # pega o nome do player
         player[u'name'] = items[0]
-
-        # pega a steamid
         player[u'steamid'] = items[1]
-
-        # pega a steam64
         player[u'steam64'] = items[2]
 
-        # pega o vac
         if items[3].isspace():
             player[u'vac'] = int(4)
             player[u'error_text'] = 'Jogador sem cadastro na steam!'
@@ -173,23 +174,18 @@ def consulta_url(profile_url):
             player[u'vac'] = int(items[3])
             player[u'error_text'] = 'Jogador sem cadastro no site da Gamers Club.'
 
-        # pega o avatar do jogador.
         player[u'avatar'] = soup.find('p').img['src']
-
-        # cria a msg do erro.
 
         return player
     else:
         erroPlayer = False
-        # pega a id do player.
-        userid = soup.find(
-            'div', 'gc-profile-user-id').get_text().split(": ")[1]
+
+        userid = soup.find('div', 'gc-profile-user-id').get_text().split(": ")[1]
         player[u'id'] = userid
 
-        # pega o stats do player
-        player_stats = get_stats(userid)
+        if 'False' in steamids:
+            player_stats = get_stats(userid)
 
-        # pega o nome do player
         name = soup.find('div', 'gc-profile-user-container').get_text()
         player[u'name'] = name
 
@@ -197,62 +193,36 @@ def consulta_url(profile_url):
             'a', 'Button Button--lg Button--social Button--steam')['href']
         player[u'steam'] = steam.split("profiles/")[1]
 
-        # verifica se a classe gc-profile-featured-box existe
         class_box = soup.find('div', class_='gc-profile-featured-box')
         if class_box:
             lvl = class_box.find_all("div", class_="gc-featured-item")[2:3]
-
-            # pega somente o numero do level o numero '20 Skill Level' somente o numero 20
             player[u'lvl'] = lvl[0].get_text().split()[0]
 
-        # pega o avatar do jogador.
-        image = soup.find(
-            'div', {"class": "gc-profile-avatar-img-container"}).img['src']
+        image = soup.find('div', {"class": "gc-profile-avatar-img-container"}).img['src']
         player[u'avatar'] = image
-
-        # pega o nome do pais
+    
         country = soup.find("span", {"class": "gc-profile-user-flag"})
         player[u'country'] = country['title']
-
-        # pega a flag do pais
         player[u'flag'] = country.img['src'][-6:]
-
-        # precisamos declarar isso empty para nao dar erro se o player nao tiver ban.
-        # reason = ban_date = duraction = "" # achei q usaria. TBR
-
-        # span_reason, 0 = 'BAN POR RACISMO ou discurso de odio', 1 = 'Entrar em contato com a GC (BAN retardado)', 2 = 'VAC', 3 = 'BANIDO POR CHEATING mas com texto diferente de hj em dia'
-        # span_reason = -1 # achei q usaria. TBR
 
         is_user_banned = False
 
-        # Criar o try pra nao dar merda
         try:
-            # tenta acha o motivo do ban
             banned = soup.find("div", "center alert alert-danger").get_text()
-
-            # se encontrar a div o jogador esta banido.
             if banned:
                 is_user_banned = True
-
-                # ele esta banido, mas ainda nao encontramos a duraction e o ban_date
                 show_ban = False
-
-                # se a palavra 'VAC' aparecer no texto do banned
 
                 if 'VAC' in banned:
                     player[u'reason'] = banned
                     player[u'motivo_span'] = 2
 
-                    # nao temos a duracao e a data do ban.
                     show_ban = True
                 else:
-                    # pega o motivo do ban
-                    reason = soup.find(
-                        "span", class_="primary-color").get_text()
+                    reason = soup.find("span", class_="primary-color").get_text()
                     player[u'reason'] = reason
 
                     if reason:
-                        # verifica o motivo
                         if 'Comportamento' in reason:
                             player[u'motivo_span'] = 0
                             show_ban = True
@@ -263,11 +233,9 @@ def consulta_url(profile_url):
                             show_ban = True
 
                     if show_ban == True:
-                        # pega a data do ban
                         ban = soup.find_all('strong')[1:2]
                         player[u'data_ban'] = ban[0].get_text()
 
-                        # pega a duracao do ban
                         duracao = soup.find_all('strong')[2:3]
                         player[u'banido_ate'] = duracao[0].get_text()
         except:
