@@ -55,7 +55,7 @@
 					<input type="submit" id="fk" class="search-submit btn" value="&#xf002" />
 				</form>
 			</section>
-			<a href="javascript:void(0)" id="change" style="color: #4CAF50;text-decoration: none;padding-top: 10px;">PESQUISAR MINHA PARTIDA</a>
+			<a href="javascript:void(0)" id="change" style="color: #4CAF50;text-decoration: none;">PESQUISAR MINHA PARTIDA</a>
         </div>
 	</div>
     <div class="page-list">
@@ -93,6 +93,17 @@
     {% endfor %}
     </div>
     <style>
+		@media screen and (max-width: 1070px)
+		{
+			.page-list {
+				display: table-column !important;
+			}
+
+			.card-container1 {
+				min-width: 250px;
+			}
+		}
+
         .page-list {
             margin: 0 auto;
             width: calc(100% - 150px);
@@ -120,6 +131,7 @@
         }
 
         .card-container1 {
+			background-color: #231E39;
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
@@ -130,7 +142,7 @@
 			color: #B3B8CD;
 			padding-top: 30px;
 			position: relative;
-			max-width: 100%;
+			/* max-width: 100%; */
 			text-align: center;
 			margin-top: 50px;
 		}

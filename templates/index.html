@@ -53,7 +53,7 @@
 # 41 10 "RANDOM NICK #9" STEAM_1:0:81875618 01:06 64 0 active 786432
 # 36 14 "RANDOM NICK #10" STEAM_1:0:39420559 04:08 48 0 active 786432
 #end</textarea>
-						<div class="actions"><input type="submit" class="button is-primary" value="Buscar!"></div>
+						<div class="actions"><input type="submit" id="ajaxx" class="button is-primary" value="Buscar!"></div>
 					</form>
 				<p></p>
 			</section>
@@ -66,7 +66,7 @@
 					<input type="submit" id="fk" class="search-submit btn" value="&#xf002" />
 				</form>
 			</section>
-			<a href="javascript:void(0)" id="change" style="color: #4CAF50;text-decoration: none;padding-top: 10px;">PESQUISAR MINHA PARTIDA</a>
+			<a href="javascript:void(0)" id="change" style="color: #4CAF50;text-decoration: none;">PESQUISAR MINHA PARTIDA</a>
 			{% if player is defined and erro_player == False %}
 			<div class="card-container animate-bottom">
 				<span title="{{ player.country }}" class="card-base-country" data-tip-text="{{ player.country }}"><img src="https://gamersclub.com.br/assets/images/flags/lobby/{{ player.flag }}" alt="{{ player.country }}"></span>
@@ -176,7 +176,27 @@
 	<script>
 		$ = jQuery;
 		$(document).ready(function() {
-				handleFocus = function(){
+			let textareavalue = $("textarea[name=content]").value;
+			$( '#ajaxx' ).click( function( ) {
+				console.log(textareavalue);
+			});
+			// 	$.ajax({
+			// 		url: "{{ url_for('search_mult') }}",
+			// 		type: "POST",
+			// 		dataType: "json",
+			// 		data: {'content':option_id},
+			// 		success: function(data){
+			// 		data = data.data;
+			// 		/* HERE I WANT TO ITERATE THROUGH THE data LIST OF OBJECTS */
+			// 		}
+
+			// 	});
+
+			// 	$(this).text((i, t) => t == 'PESQUISAR MINHA PARTIDA' ? 'PESQUISAR SÓ UM' : 'PESQUISAR MINHA PARTIDA');
+			// 	$('#mut, #teste, .card-container').toggle();
+			// });
+
+			handleFocus = function(){
 				var $this = $(this);
 				if($this.val() === $this.attr('placeholdernl')){
 					$this.val('');

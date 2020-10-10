@@ -1143,3 +1143,4 @@ env/Scripts/pyreverse.exe
 env/Scripts/python.exe
 env/Scripts/pythonw.exe
 env/Scripts/symilar.exe
+templates/multi.html
