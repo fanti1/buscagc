@@ -1,11 +1,14 @@
 from flask import Flask, render_template, request, redirect
-from OpenSSL import SSL
+#from OpenSSL import SSL
 from bs4 import BeautifulSoup
 import requests
 import json
 import sys
 import re
 import concurrent.futures
+import os
+
+# precisa dar uma arrumada nesses import so dar uma virgula ali seu desgracado
 
 app = Flask(__name__)
 
@@ -249,11 +252,19 @@ def consulta_url(profile_url, steamids = 'False'):
 
         # nao quero que salve os players buscados no multi search
         if 'False' in steamids: 
-            steamchecker = open('cache/buscas_recentes.txt', 'r').read()
+            filename = "cache/buscas_recentes.txt"
+            steamchecker = open(filename, 'r').read()
             qwert = re.search(f"{player['steam']}", steamchecker)
 
             if not qwert:
-                with open('cache/buscas_recentes.txt', 'a') as json_file:
+                #verificando o tamanho do arquivo se maior q 10mb limpa.
+                statinfo = os.stat(filename)
+                if statinfo.st_size >= 1048576:
+                    file = open(filename,"r+")
+                    file.truncate(0)
+                    file.close()
+
+                with open(filename, 'a') as json_file:
                     json_file.write(json.dumps(player))
                     json_file.write(",")
                     json_file.close()
