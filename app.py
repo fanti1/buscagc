@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from json import JSONDecoder, dumps
 from functools import partial
 import concurrent.futures
-#from OpenSSL import SSL
+from OpenSSL import SSL
 
 app = Flask(__name__)
 
