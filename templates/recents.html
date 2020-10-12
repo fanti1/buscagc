@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>PERFIS RECENTES | Gamers Club - Ban Checker | Biqueirao.xyz</title>
+	<title>Perfis Recentes | Gamers Club - Ban Checker | Biqueirao.xyz</title>
 	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
@@ -15,6 +15,10 @@
 </head>
 <body>
 	<style type="text/css">
+
+		h6 {
+			font-size: 1rem;
+		}
 
 		.card-list {
 		    display: flex;
@@ -95,12 +99,12 @@
 		</form>
 	</section>
 	<a href="javascript:void(0)" id="change" style="color: #4CAF50;text-decoration: none;">PESQUISAR MINHA PARTIDA</a>
-	<h1 style="color:#fff">PERFIS RECENTES</h1>
+	<h1 class="h" style="color:#fff">PERFIS RECENTES</h1>
 	<section class="card-list">
 		{% for player in players[-5:] %}
 		<div class="card-container">
 			<span title="{{ player.country }}" class="card-base-country" data-tip-text="{{ player.country }}"><img src="https://gamersclub.com.br/assets/images/flags/lobby/{{ player.flag }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/flags/lobby/br.png'" alt="{{ player.country }}"></span>
-			            <img class="round" src="{{ player.avatar }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/profile-v2/default-user-profile.jpg'" alt="user" />
+			            <img class="round" loading="lazy" src="{{ player.avatar }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/profile-v2/default-user-profile.jpg'" alt="user" />
             {% if player.isBanned == True %}
             <h3><a href='/profiles/{{ player.steam }}/' target="_blank" class="banido">{{ player.name.replace('\n', '') }}</a></h3>
             <span class="ban">BANIDO</span>
@@ -172,7 +176,7 @@ history.pushState({}, null, "/");
 
 $( '#change' ).click( function( ) {
 	$(this).text((i, t) => t == 'PESQUISAR MINHA PARTIDA' ? 'PESQUISAR SÓ UM JOGADOR' : 'PESQUISAR MINHA PARTIDA');
-	$('#mut, #teste, .card-container, h1, .card-list').toggle();
+	$('#mut, #teste, .card-container, .card-list, .h').toggle();
 });
 </script>
 </body>
