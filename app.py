@@ -1,24 +1,39 @@
 from flask import Flask, render_template, request, redirect
-#from OpenSSL import SSL
+import requests, sys, re, os
 from bs4 import BeautifulSoup
-import requests
-import json
-import sys
-import re
+from json import JSONDecoder, dumps
+from functools import partial
 import concurrent.futures
-import os
-
-# precisa dar uma arrumada nesses import so dar uma virgula ali seu desgracado
+#from OpenSSL import SSL
 
 app = Flask(__name__)
 
-
-# steam api pra mudar de steam id para steam64
 steamapikey = "FDBB490D0187D0AA68E36B5C28CC2657"
+
 session = requests.session()
 jar = requests.cookies.RequestsCookieJar()
 jar.set('gclubsess', '52a532c1fc2b17cab854eb25e7aac1ea95d3e2c3')  # 08.10.20
 session.cookies = jar
+
+@app.route('/', methods=['POST', 'GET'])
+def busca():
+    if request.method == 'GET':
+        stats = read_hash('buscas_recentes')
+
+        if not stats:
+            stats_fallen = get_stats(94)
+            return render_template("fallen.html", player_stats=stats_fallen)
+        else:
+            return render_template("recents.html", players=stats)
+
+    if request.method == 'POST':
+        url_front = request.form['url_busca']
+        if url_front == "":
+            return render_template("index.html")
+        dados_player = consulta_url(url_front)
+        # redirecionar sem mudar de pagina.
+        steamid64 = get_profile(url_front.split("/")[4])
+        return render_template("index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid=steamid64, player_stats=player_stats)
 
 
 @app.route('/profiles/<steamid>/', methods=['GET'])
@@ -38,22 +53,6 @@ def search_mult():
         return render_template("index2.html", players=grab_players, erro_player=erroPlayer, isAdmin=isAdmin)
 
 
-@app.route('/', methods=['POST', 'GET'])
-def busca():
-    if request.method == 'GET':
-        stats_fallen = get_stats(94)
-        return render_template("fallen.html", player_stats=stats_fallen)
-
-    if request.method == 'POST':
-        url_front = request.form['url_busca']
-        if url_front == "":
-            return render_template("index.html")
-        dados_player = consulta_url(url_front)
-        # redirecionar sem mudar de pagina.
-        steamid64 = get_profile(url_front.split("/")[4])
-        return render_template("index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid=steamid64, player_stats=player_stats)
-
-
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html")
@@ -71,10 +70,22 @@ def isInt(n):
     except ValueError:
         return False
 
-def read_hash(hashid):
-    with open( f'cache/{hashid}.txt') as f:
-        data = json.load(f)
-    return data
+# usado no read_hash
+def json_parse(fileobj, decoder=JSONDecoder(), buffersize=2048):
+    buffer = ''
+    for chunk in iter(partial(fileobj.read, buffersize), ''):
+         buffer += chunk
+         while buffer:
+             try:
+                 result, index = decoder.raw_decode(buffer)
+                 yield result
+                 buffer = buffer[index:].lstrip()
+             except ValueError:
+                 # Not enough data to decode, read more
+                 break
+
+def read_hash( hashid ):
+    return list(json_parse(open(f'cache/{hashid}.txt')))
 
 def get_profile(steamid):
     sixtyfourid = None
@@ -252,6 +263,9 @@ def consulta_url(profile_url, steamids = 'False'):
 
         # nao quero que salve os players buscados no multi search
         if 'False' in steamids: 
+            player_stats = get_stats(userid)
+            player['p_stats'] = list(player_stats)
+
             filename = "cache/buscas_recentes.txt"
             steamchecker = open(filename, 'r').read()
             qwert = re.search(f"{player['steam']}", steamchecker)
@@ -265,9 +279,9 @@ def consulta_url(profile_url, steamids = 'False'):
                     file.close()
 
                 with open(filename, 'a') as json_file:
-                    json_file.write(json.dumps(player))
-                    json_file.write(",")
-                    json_file.close()
+                	if is_user_banned == False:
+	                    json_file.write(dumps(player))
+	                    json_file.close()
     
         return player
 
