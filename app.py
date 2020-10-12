@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect
 import requests, sys, re, os
 from bs4 import BeautifulSoup
-from json import JSONDecoder, dumps
+from json import JSONDecoder, dumps, load
 from functools import partial
 import concurrent.futures
 from OpenSSL import SSL
@@ -35,6 +35,37 @@ def busca():
         steamid64 = get_profile(url_front.split("/")[4])
         return render_template("index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid=steamid64, player_stats=player_stats)
 
+def grab_file_time(hashid):
+    import datetime
+    today = datetime.datetime.today()
+    modified_date = datetime.datetime.fromtimestamp(os.path.getctime(f'cache/{hashid}.txt'))
+    duration = today - modified_date
+
+    if duration.seconds > 7200:
+        return True
+    else:
+        return False
+
+# nao deixando o player entrar na url /partida
+@app.route('/partida', methods=['GET'])
+def red():
+    return busca()
+
+
+@app.route('/partida/<matchid>/', methods=['GET'])
+def grab_match_hash(matchid):
+    if request.method == 'GET':
+        checker = os.path.isfile(f'cache/{matchid}.txt')
+        if checker:
+            filetime = grab_file_time(matchid)
+            if filetime == True:
+                os.remove(f"cache/{matchid}.txt")
+            else:
+                match_players = read_hash(matchid, 1)
+                return render_template("index2.html", players=match_players, steam64orsteamid=matchid)
+        else:
+            return busca()
+
 
 @app.route('/profiles/<steamid>/', methods=['GET'])
 def fuckoff(steamid):
@@ -48,10 +79,25 @@ def fuckoff(steamid):
 @app.route('/search', methods=['POST'])
 def search_mult():
     if request.method == 'POST':
+
+        #remove os files com mais de 2 horas menos o buscas_recentes
+        get_old_files("cache/")
+
         url_front = request.form['content']
         grab_players = get_multi_profiles(url_front)
-        return render_template("index2.html", players=grab_players, erro_player=erroPlayer, isAdmin=isAdmin)
+        return render_template("index2.html", players=grab_players, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid=hashkey)
 
+
+def get_old_files(path):
+    import time, os
+    now = time.time()
+
+    for filename in os.listdir(path):
+        filestamp = os.stat(os.path.join(path, filename)).st_ctime
+        filecompare = now - 7200
+        if filestamp < filecompare:
+            if not 'buscas_recentes.txt' in filename:
+                os.remove(f"cache/{filename}")
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -62,6 +108,13 @@ def page_not_found(e):
 def internal_error(e):
     return render_template("500.html")
 
+def get_hash():
+    import random, string
+
+    letters_and_digits = string.ascii_letters.lower() + string.digits
+    result_str = ''.join((random.choice(letters_and_digits) for i in range(5)))
+
+    return result_str
 
 def isInt(n):
     try:
@@ -84,8 +137,12 @@ def json_parse(fileobj, decoder=JSONDecoder(), buffersize=2048):
                  # Not enough data to decode, read more
                  break
 
-def read_hash( hashid ):
-    return list(json_parse(open(f'cache/{hashid}.txt')))
+def read_hash( hashid, defaut = 0 ):
+    if defaut == 1:
+        with open( f'cache/{hashid}.txt') as f:
+            return load(f)
+    else:
+        return list(json_parse(open(f'cache/{hashid}.txt')))
 
 def get_profile(steamid):
     sixtyfourid = None
@@ -132,6 +189,12 @@ def get_multi_profiles(text):
                 players.append(future.result())
             except Exception as exc:
                 print('%r generated an exception: %s' % (url, exc))
+        
+        global hashkey
+        hashkey = get_hash()
+        with open(f'cache/{hashkey}.txt', 'w') as json_file:
+            json_file.write(dumps(players))
+            json_file.close()
     
         return players
 
