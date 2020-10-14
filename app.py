@@ -1,14 +1,13 @@
 from flask import Flask, render_template, request, redirect
-import requests
-import sys
-import re
-import os
+import requests, sys, re, os
 from bs4 import BeautifulSoup
 from json import JSONDecoder, dumps, load
 from functools import partial
 import concurrent.futures
-from OpenSSL import SSL
+#from OpenSSL import SSL
+
 app = Flask(__name__)
+
 steamapikey = "FDBB490D0187D0AA68E36B5C28CC2657"
 session = requests.session()
 jar = requests.cookies.RequestsCookieJar()
@@ -28,22 +27,16 @@ def internal_error(e):
 @app.route('/', methods=['POST', 'GET'])
 def busca():
     if request.method == 'GET':
-        
         stats = read_hash('buscas_recentes')       
         if len(stats) == 0:
-            print('rendewrizou fallen')
             stats_fallen = get_stats(94)
             return render_template("fallen.html", player_stats=stats_fallen)
         else:
-            print('rendewrizou recente')
             return render_template("recents.html", players=stats)
 
     if request.method == 'POST':
         url_front = request.form['url_busca']
-        if url_front == "":
-            return render_template("index.html")
         dados_player = consulta_url(url_front)
-        # redirecionar sem mudar de pagina.
         steamid64 = get_profile(url_front.split("/")[4])
         return render_template("index.html", player=dados_player, erro_player=erroPlayer, isAdmin=isAdmin, steam64orsteamid=steamid64, player_stats=player_stats)
 
@@ -103,8 +96,7 @@ def grab_file_time(hashid):
 
 
 def get_old_files(path):
-    import time
-    import os
+    import time, os
     now = time.time()
 
     for filename in os.listdir(path):
@@ -116,8 +108,7 @@ def get_old_files(path):
 
 
 def get_hash():
-    import random
-    import string
+    import random, string
 
     letters_and_digits = string.ascii_letters.lower() + string.digits
     result_str = ''.join((random.choice(letters_and_digits) for i in range(5)))
