@@ -16,13 +16,29 @@
 <body>
 	<style type="text/css">
 
+		@media screen and (max-width: 700px) 
+		{
+			.card-list {
+			    display: inline !important;
+			    padding: 3rem 0 !important;
+			}
+
+			.card-container:not(:first-child) {
+			    margin-left: 0px !important;
+			}
+
+			.card-container {
+				margin-bottom: 5rem !important;
+			}
+		}
+ 
 		h6 {
 			font-size: 1rem;
 		}
 
 		.card-list {
 		    display: flex;
-		    padding: 3rem;
+		    padding: 3rem 15em;
 		}
 
 		.card-container {
@@ -57,6 +73,10 @@
 
 		.card-container:not(:first-child) {
 		    margin-left: -130px;
+		}
+
+		.card-container:last-child {
+			transform: translateY(-1rem);
 		}
 	</style>
 	<section class="section" id="mut" style="display: none;padding:3rem 3rem 1.5rem 3rem">
@@ -138,7 +158,6 @@
 				</div>
 
 			</div>
-			<span style="float:right;">{{loop.index}}</span>
 		</div>
 		{% endfor %}
 	</section>
