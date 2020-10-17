@@ -270,8 +270,9 @@ def consulta_url(profile_url, nickname='', multiSearch='False'):
         if 'True' in multiSearch:
             player[u'name'] = nickname
         else:
-            name = soup.find('div', 'gc-profile-user-container').get_text()
-            player[u'name'] = name
+            name = soup.find('div', 'gc-profile-user-container')
+            if name is not None:
+                player[u'name'] = name.get_text()
 
         steam = soup.find(class_='Button--steam')
         if steam is not None:
