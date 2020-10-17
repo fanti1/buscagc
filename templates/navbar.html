@@ -15,19 +15,19 @@
 
 		nav .nav-items li {
 			list-style: none;
-			padding: 0px 75px
+			padding: 0px 91px;
 		}
 
 		nav .nav-items li a {
-			color: #fff;
+			color: #b3b8bd;
 			font-size: 18px;
 			font-weight: 500;
 			text-decoration: none;
 		}
 
-		nav .nav-items li a:hover {
+/*		nav .nav-items li a:hover {
 			color: #ff3d00;
-		}
+		}*/
 
 		nav form {
 			display: flex;
@@ -50,17 +50,17 @@
 
 		nav form button {
 			padding: 0 15px;
-			color: #fff;
+			color: #b3b8bd;
 			font-size: 17px;
-			background: #ff3d00;
+			background: #4B2F4F;
 			border: none;
-			border-radius: 2px;
+			border-radius: 3px;
 			cursor: pointer;
 		}
 
-		nav form button:hover {
+		/*nav form button:hover {
 			background: #e63600;
-		}
+		}*/
 
 		nav .menu-icon,
 		nav .cancel-icon,
@@ -80,7 +80,7 @@
 			display: none;
 		}
 
-		@media (max-width: 1245px) {
+		/*@media (max-width: 1245px) {
 			nav{
 				padding: 0 50px;
 			}
@@ -202,22 +202,22 @@
 				margin: 0 10px;
 				font-size: 16px;
 			}
-		}
+		}*/
 
 		.btnz {
 			    padding: 10px 15px;
-			    color: #fff;
+			    color: #b3b8bd;
 			    font-size: 20px;
-			    background: #ff3d00;
+			    background: #4B2F4F;
 			    border: none;
 			    border-radius: 3px;
 			    cursor: pointer;
 		}
 
 		.ain {
-			text-decoration: none;
+			color: #fff;
 		    padding: 10px;
-		    background-color: #212234;
+		    background-color: #4B2F4F;
 		    border-radius: 3px;
 		}
 
@@ -235,6 +235,28 @@
 
 			display: none;
 		}
+
+		.actions {
+			display: flex;
+			flex-direction: column;
+		}
+
+		.textarea {
+			width: 100%;
+		    height: 250px;
+		    border-radius: 5px;
+		    background-color: rgb(30, 35, 43);
+		    border: none;
+		    color: #57595a;
+		    font-size: 17px;
+		    padding: 5px;
+		}
+
+		.title {
+			text-align: center;
+			color: #b3b8bd;
+    		text-shadow: 2px 2px #4b2f4f;
+		}
 		
 	</style>
 	<nav>
@@ -247,6 +269,12 @@
 		</div>
 	</nav>
 	<nav>
+		<!-- <div class="search-icon">
+			<span class="fas fa-search"></span>
+		</div>
+		<div class="cancel-icon">
+			<span class="fas fa-times"></span>
+		</div> -->
 		<form action="#" class="">
 			<input id="textbox" title="Você deve pesquisar por SteamID ou Steam URL." type="search" class="search-data" placeholder="Procure por SteamID ou Steam URL" name="url_busca" pattern="^https?://(?:www\.)?steamcommunity\.com/(id/([^/\s]*)|profiles/([^/\s]*))/?" required/>
 			<button type="submit" id="keke" class="fas fa-search" aria-hidden="true"></button>
@@ -254,10 +282,10 @@
 	</nav>
 	<div id="loader"></div>
 	<section class="section" id="mut" style="display: none;">
-		<h1 class="title" style="color:#fff;text-align: center;">Pesquise por múltiplos jogadores</h1>
-			<p style="color: #7eb760;padding-bottom: 5px;margin-bottom: 0px !important;">Digite 'status' no console ao jogar (MM, FACEIT, outro) e cole o conteúdo abaixo!</p>
-			<form method="post" action="{{ url_for('search_mult') }}" onsubmit="javascript:return Check( )">
-				<textarea class="textarea" required name="content" style="width: 100%; height: 200px; color: gray;border-radius: 5px;" placeholdernl='# userid name uniqueid connected ping loss state rate
+		<h1 class="title">Pesquise por múltiplos jogadores</h1>
+			<p style="color: #76ad59;padding-bottom: 5px;margin-bottom: 0px !important;font-size: 17px;">Digite 'status' no console ao jogar (MM, FACEIT, outro) e cole o conteúdo abaixo!</p>
+			<form method="post" action="{{ url_for('search_mult') }}" id="Form">
+				<textarea class="textarea" required name="content" placeholdernl='# userid name uniqueid connected ping loss state rate
 # 23 2 "RANDOM NICK #1" STEAM_1:0:14372359 04:43 69 0 active 786432
 # 24 3 "RANDOM NICK #2" STEAM_1:0:93519764 04:41 86 0 active 786432
 # 25 4 "RANDOM NICK #3" STEAM_1:1:41991239 04:38 76 0 active 786432
@@ -283,4 +311,29 @@
 			<div class="actions"><input type="submit" id="ajaxx" class="button is-primary btnz" value="Buscar!"></div>
 		</form>
 	</section>
-
+	<!-- <script>
+		const menuBtn = document.querySelector(".menu-icon span");
+		const searchBtn = document.querySelector(".search-icon");
+		const cancelBtn = document.querySelector(".cancel-icon");
+		const items = document.querySelector(".nav-items");
+		const form = document.querySelector("form");
+		menuBtn.onclick = ()=>{
+		  items.classList.add("active");
+		  menuBtn.classList.add("hide");
+		  searchBtn.classList.add("hide");
+		  cancelBtn.classList.add("show");
+		}
+		cancelBtn.onclick = ()=>{
+		  items.classList.remove("active");
+		  menuBtn.classList.remove("hide");
+		  searchBtn.classList.remove("hide");
+		  cancelBtn.classList.remove("show");
+		  form.classList.remove("active");
+		  cancelBtn.style.color = "#ff3d00";
+		}
+		searchBtn.onclick = ()=>{
+		  form.classList.add("active");
+		  searchBtn.classList.add("hide");
+		  cancelBtn.classList.add("show");
+		}
+  </script> -->

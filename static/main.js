@@ -1,27 +1,30 @@
 
 $(document).ready(function( )  {
-	var isRunning = false;
-	var sending = false;
-	let textareavalue = $("textarea[name=content]").value;
-	$( '#ajaxx' ).click( function( ) {
-		if ( sending == true )
+	isRunning = false;
+    $('#Form').on('submit', function(e){
+    	e.preventDefault();
+
+        var regx = /STEAM_[0-5]:[01]:\d+/g;
+		var value = $('textarea[name=content]').val( );
+		if ( regx.test( value ) )
 		{
 			isRunning = true;
-			$( "#loader" ).fadeIn( "slow" );
-			$( "#mut").toggle();
 
+			$( "#mut").toggle();
+			$( "#loader" ).fadeIn( "slow" );
 			$( "#change" ).text( "BUSCANDO" );
 			$( "#keke" ).prop("disabled", true);
-			$('.nav-items li a:first-child').attr("href", "javascript:void(0)");
-		}
+			$( ".nav-items li a:first-child" ).attr("href", "javascript:void(0)");
 
-	});
+			this.submit( );
+		}
+    });
 
 	handleFocus = function(){
 		var $this = $(this);
 		if($this.val() === $this.attr('placeholdernl')){
 			$this.val('');
-			$this.css('color', '');
+			$this.css('color', 'fff');
 		}
 	};
 
@@ -29,7 +32,7 @@ $(document).ready(function( )  {
 		var $this = $(this);
 		if($this.val() == ''){
 			$this.val($this.attr('placeholdernl'))
-			$this.css('color', 'gray');
+			$this.css('color', '#57595a');
 		}
 	};
 
@@ -50,18 +53,21 @@ $(document).ready(function( )  {
 	});
 });
 
-function Check( )
+function Check()
 {
 	var regx = /STEAM_[0-5]:[01]:\d+/g;
 	var value = $('textarea[name=content]').val( );
 	if ( regx.test( value ) )
 	{
-		sending = true;
+		notSending = false;
+		console.log(notSending);
 		return true;
 	}
 	else
 	{
-		sending = false;
+		notSending = true;
+		console.log(notSending);
 		return false;
+		
 	}
 }

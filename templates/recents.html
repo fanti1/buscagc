@@ -4,19 +4,48 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Perfis Recentes | Gamers Club - Ban Checker | Biqueirao.xyz</title>
-	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
 	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 	<link rel="shortcut icon" href="https://hackertyper.net/img/favicon.ico">
 	<link href="https://fonts.googleapis.com/css?family=Teko|Poppins|Comfortaa|Open+Sans" rel="stylesheet">
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='main.js') }}" ></script>
 	<!-- adsense lul -->
 	<script data-ad-client="ca-pub-1348364283847032" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body>
 	<style type="text/css">
 
-		@media screen and (max-width: 700px) 
+		@media screen and (max-width: 1200px){
+			body{
+				display: flex;
+				zoom: 0.4;
+			}
+
+			.card-list {
+				/* padding: 1rem 1rem !important; */
+				margin: 0 100px;
+			}
+
+			.card-container:not(:first-child) {
+			    margin-left: 0px !important;
+			}
+
+			.card-container {
+				margin-bottom: 5rem !important;
+			}
+
+			.card-container:focus-within~.card-container, .card-container:hover~.card-container {
+		    	transform: translateX(0px) !important;
+			}
+
+			.card-container:hover {
+			    transform: translateY(0px) !important;;
+			}
+		}
+
+		@media screen and (max-width: 678px) 
 		{
 			.card-list {
 			    display: inline !important;
@@ -30,6 +59,15 @@
 			.card-container {
 				margin-bottom: 5rem !important;
 			}
+
+			.card-container:focus-within~.card-container, .card-container:hover~.card-container {
+		    	transform: translateX(0px) !important;;
+			}
+
+			.card-container:hover {
+			    transform: translateY(0px) !important;;
+			}
+
 		}
  
 		h6 {
@@ -38,17 +76,18 @@
 
 		.card-list {
 		    display: flex;
-		    padding: 3rem 15em;
+			padding: 5rem 15em;
+			overflow-x: scroll;
 		}
 
 		.card-container {
+			
 			height: auto;
 			width: 100%;
 		    padding: 1.5rem;
 		    border-radius: 16px;
-		    box-shadow: 0px 10px 20px -10px rgba(0,0,0,0.75);
 		    background: #17141d;
-		    /*box-shadow: -1rem 0 3rem #000;*/
+		    box-shadow: -1rem 0 3rem #000;
 		    display: flex;
 		    flex-direction: column;
 		    align-items: center;
@@ -79,57 +118,18 @@
 			transform: translateY(-1rem);
 		}
 	</style>
-	<section class="section" id="mut" style="display: none;padding:3rem 3rem 1.5rem 3rem">
-		<h1 class="title" style="color:#fff;">Pesquisa múltipla</h1>
-		<p style="color: #7eb760;padding-bottom: 5px;margin-bottom: 0px !important;">Digite 'status' no console ao jogar (MM, FACEIT, outro) e cole o conteúdo abaixo!</p>
-		<form method="post" action="{{ url_for('search_mult') }}">
-			<textarea class="textarea" required name="content" style="width: 100%; height: 200px; color: gray;border-radius: 5px;" placeholdernl="# userid name uniqueid connected ping loss state rate
-# 23 2 &quot;RANDOM NICK #1&quot; STEAM_1:0:14372359 04:43 69 0 active 786432
-# 24 3 &quot;RANDOM NICK #2&quot; STEAM_1:0:93519764 04:41 86 0 active 786432
-# 25 4 &quot;RANDOM NICK #3&quot; STEAM_1:1:41991239 04:38 76 0 active 786432
-# 38 5 &quot;RANDOM NICK #4&quot; STEAM_1:1:112446396 03:37 94 0 active 786432
-# 40 6 &quot;RANDOM NICK #5&quot; STEAM_1:0:37709745 03:03 60 0 active 786432
-# 39 7 &quot;RANDOM NICK #6&quot; STEAM_1:1:92410050 03:33 78 0 active 786432
-# 37 8 &quot;RANDOM NICK #7&quot; STEAM_1:0:58391317 03:56 67 0 active 786432
-# 35 9 &quot;RANDOM NICK #8&quot; STEAM_1:0:37130163 04:08 93 0 active 786432
-# 41 10 &quot;RANDOM NICK #9&quot; STEAM_1:0:81875618 01:06 64 0 active 786432
-# 36 14 &quot;RANDOM NICK #10&quot; STEAM_1:0:39420559 04:08 48 0 active 786432
-#end"># userid name uniqueid connected ping loss state rate
-# 23 2 &quot;RANDOM NICK #1&quot; STEAM_1:0:14372359 04:43 69 0 active 786432
-# 24 3 &quot;RANDOM NICK #2&quot; STEAM_1:0:93519764 04:41 86 0 active 786432
-# 25 4 &quot;RANDOM NICK #3&quot; STEAM_1:1:41991239 04:38 76 0 active 786432
-# 38 5 &quot;RANDOM NICK #4&quot; STEAM_1:1:112446396 03:37 94 0 active 786432
-# 40 6 &quot;RANDOM NICK #5&quot; STEAM_1:0:37709745 03:03 60 0 active 786432
-# 39 7 &quot;RANDOM NICK #6&quot; STEAM_1:1:92410050 03:33 78 0 active 786432
-# 37 8 &quot;RANDOM NICK #7&quot; STEAM_1:0:58391317 03:56 67 0 active 786432
-# 35 9 &quot;RANDOM NICK #8&quot; STEAM_1:0:37130163 04:08 93 0 active 786432
-# 41 10 &quot;RANDOM NICK #9&quot; STEAM_1:0:81875618 01:06 64 0 active 786432
-# 36 14 &quot;RANDOM NICK #10&quot; STEAM_1:0:39420559 04:08 48 0 active 786432
-#end</textarea>
-			<div class="actions"><input type="submit" class="button is-primary" value="Buscar!" style="margin-bottom: 10px;"></div>
-		</form>
-	</section>
-	<section class="section" id="teste" style="display: block;padding:3rem 3rem 1.5rem 3rem">
-		<form action="/" method="post" class="search-form form">
-			<label>
-				<input id="textbox" title="Você deve pesquisar por SteamID ou Steam URL." type="search" class="search-field" placeholder="Procure por SteamID ou Steam URL" name="url_busca"
-					pattern="^https?://(?:www\.)?steamcommunity\.com/(id/([^/\s]*)|profiles/([^/\s]*))/?" required size=50/>
-			</label>
-			<input type="submit" id="fk" class="search-submit btn" value="&#xf002" />
-		</form>
-	</section>
-	<a href="javascript:void(0)" id="change" style="color: #4CAF50;text-decoration: none;">PESQUISAR MINHA PARTIDA</a>
-	<h1 class="h" style="color:#fff">PERFIS RECENTES</h1>
+	{% include 'navbar.html' %}
+	<h1 class="h" style="color: #b3b8bd; text-shadow: 2px 2px #4b2f4f;">PERFIS RECENTES</h1>
 	<section class="card-list">
 		{% for player in players[-5:] %}
 		<div class="card-container">
 			<span title="{{ player.country }}" class="card-base-country" data-tip-text="{{ player.country }}"><img src="https://gamersclub.com.br/assets/images/flags/lobby/{{ player.flag }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/flags/lobby/br.png'" alt="{{ player.country }}"></span>
 			            <img class="round" loading="lazy" src="{{ player.avatar }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/profile-v2/default-user-profile.jpg'" alt="user" />
             {% if player.isBanned == True %}
-            <h3><a href='/profiles/{{ player.steam }}/' target="_blank" class="banido">{{ player.name.replace('\n', '') }}</a></h3>
+            <h3><a href='/profiles/{{ player.steam }}/' class="banido">{{ player.name.replace('\n', '') }}</a></h3>
             <span class="ban">BANIDO</span>
             {% else %} 
-            <h3><a href='/profiles/{{ player.steam }}/' target="_blank" style="text-decoration: none;color: #fff;">{{ player.name.replace('\n', '') }}</a></h3>
+            <h3><a href='/profiles/{{ player.steam }}/' style="text-decoration: none;color: #fff;">{{ player.name.replace('\n', '') }}</a></h3>
             <span class="pro">SEM BAN</span>
             {% endif %}
             <span class="new-badge new-level-{{ player.lvl }}" style="
@@ -139,10 +139,115 @@
                 background-size: cover;">
             <div class="lvl-value">{{ player.lvl }}</div>
             </span>
-            <h6>Skill Level</h6>
+			<h6>Skill Level</h6>
+			{% if player.isBanned == True %}
+			<textarea id="bar" text-hidden="true">MEMBRO BANIDO NA GAMERS CLUB{% if player.data_ban is defined %} em {{ player.data_ban }} até {{ player.banido_ate }}!{% endif %} Motivo: {{ player.reason }}</textarea>
+			<button id="copy-button" style="margin-top: 5px;padding: 5px;cursor: pointer;background-color: #5C161D;border: 1px solid #5C161D;border-radius: 3px;color: #b3b8cd;" data-clipboard-action="copy" data-clipboard-target="#bar">
+				<i class="fa fa-clipboard" aria-hidden="true"></i> Copiar motivo
+			</button>
+			<div class="skills" style="margin-top:-2px !important">
+			{% else %}
 			<div class="skills">
-				{% if player.p_stats is not defined %}
-				<h6 style="padding-left: 15px;text-align: center;">Estatísticas não estão disponíveis no momento.</h6>
+			{% endif %}
+				{% if 'e' in player.p_stats %}
+				<div class="StatsBoxStatsList StatsBoxStatsList--Lasts" style="grid-area: span 2 / span 5 / auto / auto; grid-template-columns: repeat(4, 1fr);">
+					<div class="StatsBoxPlayerInfo">
+						<div class="StatsBoxPlayerInfoItem">
+							<div class="StatsBoxPlayerInfoItem__Content">
+								<div class="StatsBoxPlayerInfoItem__name">KDR</div>
+								<div class="StatsBoxPlayerInfoItem__value">0</div>
+							</div>
+						</div>
+					</div>
+					<div class="StatsBoxPlayerInfo">
+						<div class="StatsBoxPlayerInfoItem">
+							<div class="StatsBoxPlayerInfoItem__Content">
+								<div class="StatsBoxPlayerInfoItem__name">ADR</div>
+								<div class="StatsBoxPlayerInfoItem__value">0</div>
+							</div>
+						</div>
+					</div>
+					<div class="StatsBoxPlayerInfo">
+						<div class="StatsBoxPlayerInfoItem">
+							<div class="StatsBoxPlayerInfoItem__Content">
+								<div class="StatsBoxPlayerInfoItem__name">Matou</div>
+								<div class="StatsBoxPlayerInfoItem__value">0</div>
+							</div>
+						</div>
+					</div>
+					<div class="StatsBoxPlayerInfo">
+						<div class="StatsBoxPlayerInfoItem">
+							<div class="StatsBoxPlayerInfoItem__Content">
+								<div class="StatsBoxPlayerInfoItem__name">Morreu</div>
+								<div class="StatsBoxPlayerInfoItem__value">0</div>
+							</div>
+						</div>
+					</div>
+					<div class="StatsBoxPlayerInfo">
+						<div class="StatsBoxPlayerInfoItem">
+							<div class="StatsBoxPlayerInfoItem__Content">
+								<div class="StatsBoxPlayerInfoItem__name">KAST%</div>
+								<div class="StatsBoxPlayerInfoItem__value">0%</div>
+							</div>
+						</div>
+					</div>
+					<div class="StatsBoxPlayerInfo">
+						<div class="StatsBoxPlayerInfoItem">
+							<div class="StatsBoxPlayerInfoItem__Content">
+								<div class="StatsBoxPlayerInfoItem__name">Multi Kills</div>
+								<div class="StatsBoxPlayerInfoItem__value">0</div>
+							</div>
+						</div>
+					</div>
+					<div class="StatsBoxPlayerInfo">
+						<div class="StatsBoxPlayerInfoItem">
+							<div class="StatsBoxPlayerInfoItem__Content">
+								<div class="StatsBoxPlayerInfoItem__name">First kills</div>
+								<div class="StatsBoxPlayerInfoItem__value">0</div>
+							</div>
+						</div>
+					</div>
+					<div class="StatsBoxPlayerInfo">
+						<div class="StatsBoxPlayerInfoItem">
+							<div class="StatsBoxPlayerInfoItem__Content">
+								<div class="StatsBoxPlayerInfoItem__name">Clutches</div>
+								<div class="StatsBoxPlayerInfoItem__value">0</div>
+							</div>
+						</div>
+					</div>
+					<div class="StatsBoxPlayerInfo">
+						<div class="StatsBoxPlayerInfoItem">
+							<div class="StatsBoxPlayerInfoItem__Content">
+								<div class="StatsBoxPlayerInfoItem__name">HS%</div>
+								<div class="StatsBoxPlayerInfoItem__value">0%</div>
+							</div>
+						</div>
+					</div>
+					<div class="StatsBoxPlayerInfo">
+						<div class="StatsBoxPlayerInfoItem">
+							<div class="StatsBoxPlayerInfoItem__Content">
+								<div class="StatsBoxPlayerInfoItem__name">Precisão%</div>
+								<div class="StatsBoxPlayerInfoItem__value">0%</div>
+							</div>
+						</div>
+					</div>
+					<div class="StatsBoxPlayerInfo">
+						<div class="StatsBoxPlayerInfoItem">
+							<div class="StatsBoxPlayerInfoItem__Content">
+								<div class="StatsBoxPlayerInfoItem__name">Bombas pla.</div>
+								<div class="StatsBoxPlayerInfoItem__value">0</div>
+							</div>
+						</div>
+					</div>
+					<div class="StatsBoxPlayerInfo">
+						<div class="StatsBoxPlayerInfoItem">
+							<div class="StatsBoxPlayerInfoItem__Content">
+								<div class="StatsBoxPlayerInfoItem__name">Bombas def.</div>
+								<div class="StatsBoxPlayerInfoItem__value">0</div>
+							</div>
+						</div>
+					</div>
+				</div>
 				{% endif %}
 				<div class="StatsBoxStatsList StatsBoxStatsList--Lasts" style="grid-area: span 2 / span 5 / auto / auto; grid-template-columns: repeat(4, 1fr);">
 				{% for stats in player.p_stats %}
@@ -156,49 +261,22 @@
 					</div>
 				{% endfor %}
 				</div>
-
 			</div>
 		</div>
 		{% endfor %}
 	</section>
-</div>
-</div>
-<div id="kz" class="logo1"><a href="/profiles/76561198047241875/">kinz</a> & <a href="/profiles/76561198888066058/" >dex</a></div>
-<script>
-$ = jQuery;
-$(document).ready(function() {
-		handleFocus = function(){
-		var $this = $(this);
-		if($this.val() === $this.attr('placeholdernl')){
-			$this.val('');
-			$this.css('color', '');
-		}
-	};
+	<div id="kz" class="logo1"><a href="/profiles/76561198047241875/">kinz</a> & <a href="/profiles/76561198888066058/" >dex</a></div>
+	<script>
+		history.pushState({}, null, "/");
 
-	handleBlur = function(){
-		var $this = $(this);
-		if($this.val() == ''){
-			$this.val($this.attr('placeholdernl'))
-			$this.css('color', 'gray');
-		}    
-	};
-
-	$('textarea[placeholdernl]').each(function(){
-		var $this = $(this),
-			value = $this.val(),
-			placeholder = $this.attr('placeholder');
-		$this.attr('placeholdernl', value ? value : placeholder);
-		$this.val('');
-		$this.focus(handleFocus).blur(handleBlur).trigger('blur');
-	});
-});
-
-history.pushState({}, null, "/");
-
-$( '#change' ).click( function( ) {
-	$(this).text((i, t) => t == 'PESQUISAR MINHA PARTIDA' ? 'PESQUISAR SÓ UM JOGADOR' : 'PESQUISAR MINHA PARTIDA');
-	$('#mut, #teste, .card-container, .card-list, .h').toggle();
-});
-</script>
+		var clipboardArranque = new ClipboardJS('#copy-button');
+		clipboardArranque.on('success', function(e) {
+			e.trigger.innerHTML = '<i class="fa fa-check" aria-hidden="true"></i> Copiado!';
+			setTimeout(function() {
+				e.trigger.innerHTML = '<i class="fa fa-clipboard" aria-hidden="true"></i> Clique para copiar';
+			}, 2000);
+			e.clearSelection();
+		});
+	</script>
 </body>
 </html>
