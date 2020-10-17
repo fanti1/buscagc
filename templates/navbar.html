@@ -1,0 +1,286 @@
+	<style>
+		nav {
+			background: transparent;
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			justify-content: center;
+			height: 70px;
+			width: 100%;
+		}
+
+		nav .nav-items {
+			display: flex;
+		}
+
+		nav .nav-items li {
+			list-style: none;
+			padding: 0px 75px
+		}
+
+		nav .nav-items li a {
+			color: #fff;
+			font-size: 18px;
+			font-weight: 500;
+			text-decoration: none;
+		}
+
+		nav .nav-items li a:hover {
+			color: #ff3d00;
+		}
+
+		nav form {
+			display: flex;
+			height: 40px;
+			background: #1e232b;
+			min-width: 490px;
+			border-radius: 2px;
+		}
+
+		nav form .search-data {
+			width: 100%;
+			height: 100%;
+			padding: 0 10px;
+			color: #fff;
+			font-size: 17px;
+			border: none;
+			font-weight: 500;
+			background: none;
+		}
+
+		nav form button {
+			padding: 0 15px;
+			color: #fff;
+			font-size: 17px;
+			background: #ff3d00;
+			border: none;
+			border-radius: 2px;
+			cursor: pointer;
+		}
+
+		nav form button:hover {
+			background: #e63600;
+		}
+
+		nav .menu-icon,
+		nav .cancel-icon,
+		nav .search-icon {
+			width: 40px;
+			text-align: center;
+			margin: 0 50px;
+			font-size: 18px;
+			color: #fff;
+			cursor: pointer;
+			display: none;
+		}
+
+		nav .menu-icon span,
+		nav .cancel-icon,
+		nav .search-icon {
+			display: none;
+		}
+
+		@media (max-width: 1245px) {
+			nav{
+				padding: 0 50px;
+			}
+		}
+
+		@media (max-width: 1140px) {
+			nav{
+				padding: 0px;
+			}
+
+			nav .logo {
+				flex: 2;
+				text-align: center;
+			}
+
+			nav .nav-items {
+				position: fixed;
+				z-index: 99;
+				top: 70px;
+				width: 100%;
+				left: -100%;
+				height: 100%;
+				padding: 10px 50px 0 50px;
+				text-align: center;
+				background: #14181f;
+				display: inline-block;
+				transition: left 0.3s ease;
+			}
+
+			nav .nav-items.active {
+				left: 0px;
+			}
+
+			nav .nav-items li {
+				line-height: 40px;
+				margin: 30px 0;
+			}
+
+			nav .nav-items li a {
+				font-size: 20px;
+			}
+
+			nav form {
+				position: absolute;
+				top: 80px;
+				right: 50px;
+				opacity: 0;
+				pointer-events: none;
+				transition: top 0.3s ease, opacity 0.1s ease;
+			}
+
+			nav form.active {
+				top: 95px;
+				opacity: 1;
+				pointer-events: auto;
+			}
+
+			nav form:before {
+				position: absolute;
+				content: "";
+				top: -13px;
+				right: 0px;
+				width: 0;
+				height: 0;
+				z-index: -1;
+				border: 10px solid transparent;
+				border-bottom-color: #1e232b;
+				margin: -20px 0 0;
+			}
+
+			nav form:after {
+				position: absolute;
+				content: '';
+				height: 60px;
+				padding: 2px;
+				background: #1e232b;
+				border-radius: 2px;
+				min-width: calc(100% + 20px);
+				z-index: -2;
+				left: 50%;
+				top: 50%;
+				transform: translate(-50%, -50%);
+			}
+
+			nav .menu-icon {
+				display: block;
+			}
+
+			nav .search-icon,
+			nav .menu-icon span {
+				display: block;
+			}
+
+			nav .menu-icon span.hide,
+			nav .search-icon.hide {
+				display: none;
+			}
+
+			nav .cancel-icon.show {
+				display: block;
+			}
+		}
+
+		@media (max-width: 980px) {
+			nav .menu-icon,
+			nav .cancel-icon,
+			nav .search-icon{
+				margin: 0 20px;
+			}
+			nav form {
+				right: 30px;
+			}
+		}
+
+		@media (max-width: 350px) {
+			nav .menu-icon,
+			nav .cancel-icon,
+			nav .search-icon {
+				margin: 0 10px;
+				font-size: 16px;
+			}
+		}
+
+		.btnz {
+			    padding: 10px 15px;
+			    color: #fff;
+			    font-size: 20px;
+			    background: #ff3d00;
+			    border: none;
+			    border-radius: 3px;
+			    cursor: pointer;
+		}
+
+		.ain {
+			text-decoration: none;
+		    padding: 10px;
+		    background-color: #212234;
+		    border-radius: 3px;
+		}
+
+		#loader {
+			border: 4px solid #f3f3f3;
+			border-radius: 50%;
+			border-top: 4px solid #3498db;
+			width: 50px;
+			height: 50px;
+			-webkit-animation: spin 2s linear infinite;
+			animation: spin 2s linear infinite;
+			margin-left: auto;
+			margin-right: auto;
+			margin-top: 100px;
+
+			display: none;
+		}
+		
+	</style>
+	<nav>
+		<div class="menu-icon">
+			<span class="fas fa-bars" aria-hidden="true"></span>
+		</div>
+		<div class="nav-items">
+			<li><a href="{{ url_for('busca') }}">Home</a></li>
+			<li><a href="javascript:void(0)" id="change" class="ain">PESQUISAR MINHA PARTIDA</a></li>
+		</div>
+	</nav>
+	<nav>
+		<form action="#" class="">
+			<input id="textbox" title="Você deve pesquisar por SteamID ou Steam URL." type="search" class="search-data" placeholder="Procure por SteamID ou Steam URL" name="url_busca" pattern="^https?://(?:www\.)?steamcommunity\.com/(id/([^/\s]*)|profiles/([^/\s]*))/?" required/>
+			<button type="submit" id="keke" class="fas fa-search" aria-hidden="true"></button>
+		</form>
+	</nav>
+	<div id="loader"></div>
+	<section class="section" id="mut" style="display: none;">
+		<h1 class="title" style="color:#fff;text-align: center;">Pesquise por múltiplos jogadores</h1>
+			<p style="color: #7eb760;padding-bottom: 5px;margin-bottom: 0px !important;">Digite 'status' no console ao jogar (MM, FACEIT, outro) e cole o conteúdo abaixo!</p>
+			<form method="post" action="{{ url_for('search_mult') }}" onsubmit="javascript:return Check( )">
+				<textarea class="textarea" required name="content" style="width: 100%; height: 200px; color: gray;border-radius: 5px;" placeholdernl='# userid name uniqueid connected ping loss state rate
+# 23 2 "RANDOM NICK #1" STEAM_1:0:14372359 04:43 69 0 active 786432
+# 24 3 "RANDOM NICK #2" STEAM_1:0:93519764 04:41 86 0 active 786432
+# 25 4 "RANDOM NICK #3" STEAM_1:1:41991239 04:38 76 0 active 786432
+# 38 5 "RANDOM NICK #4" STEAM_1:1:112446396 03:37 9 0 active 786432
+# 40 6 "RANDOM NICK #5" STEAM_1:0:37709745 03:03 60 0 active 786432
+# 39 7 "RANDOM NICK #6" STEAM_1:1:92410050 03:33 78 0 active 786432
+# 37 8 "RANDOM NICK #7" STEAM_1:0:58391317 03:56 67 0 active 786432
+# 35 9 "RANDOM NICK #8" STEAM_1:0:37130163 04:08 93 0 active 786432
+# 41 10 "RANDOM NICK #9" STEAM_1:0:81875618 01:06 6 0 active 786432
+# 36 14 "RANDOM NICK #10" STEAM_1:0:39420559 0:08 4 0 active 786432
+#end'># userid name uniqueid connected ping loss state rate
+# 23 2 "RANDOM NICK #1" STEAM_1:0:14372359 04:43 69 0 active 786432
+# 24 3 "RANDOM NICK #2" STEAM_1:0:93519764 04:41 86 0 active 786432
+# 25 4 "RANDOM NICK #3" STEAM_1:1:41991239 04:38 76 0 active 786432
+# 38 5 "RANDOM NICK #4" STEAM_1:1:112446396 03:37 9 0 active 786432
+# 40 6 "RANDOM NICK #5" STEAM_1:0:37709745 03:03 60 0 active 786432
+# 39 7 "RANDOM NICK #6" STEAM_1:1:92410050 03:33 78 0 active 786432
+# 37 8 "RANDOM NICK #7" STEAM_1:0:58391317 03:56 67 0 active 786432
+# 35 9 "RANDOM NICK #8" STEAM_1:0:37130163 04:08 93 0 active 786432
+# 41 10 "RANDOM NICK #9" STEAM_1:0:81875618 01:06 6 0 active 786432
+# 36 14 "RANDOM NICK #10" STEAM_1:0:39420559 0:08 4 0 active 786432
+#end</textarea>
+			<div class="actions"><input type="submit" id="ajaxx" class="button is-primary btnz" value="Buscar!"></div>
+		</form>
+	</section>
+

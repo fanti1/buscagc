@@ -15,7 +15,7 @@
 		} */
 
 		/* Small screens */
-		@media screen and (max-width: 768px)
+		@media screen and (max-width: 678px) 
 		{
 			.container {
 				padding: 3rem 1rem 0rem 1rem !important;
@@ -290,7 +290,8 @@
 		}
 	
 		body {
-			background-color: #28223F;
+			/* bgcolor = #28223F antiga */
+			background-color: #10111b; 
 			font-family: Poppins, Montserrat, sans-serif;
 			
 			display: flex;
@@ -328,7 +329,8 @@
 	
 		.card-container {
 			/* 231E39 */
-			background-color: #17141d; 
+			/* antigo bg #17141d*/
+			background-color: #212234;
 			border-radius: 5px;
 			padding: 1.5rem;
 			box-shadow: 0px 10px 20px -10px rgba(0,0,0,0.75);
@@ -366,9 +368,9 @@
 			right: 30px;
 		}
 	
-		.card-container .ban {
+		.ban {
 			color: #fff;
-			background-color: red;
+			background-color: #5C161D;
 			border-radius: 3px;
 			font-size: 14px;
 			font-weight: bold;
@@ -390,7 +392,7 @@
 			left: 30px;
 		}
 	
-		.card-container .round {
+		.round {
 			width: 125px;
 			height: 125px;
 			display: block;
@@ -881,4 +883,14 @@
 	/*! CSS Used from: Embedded */
 	.logo1{padding:0 10px;color:#333;font-size:32px;font-family:'Comfortaa', Helvetica, sans-serif;cursor:default;}
 
+	/* Safari */
+	@-webkit-keyframes spin {
+		0% { -webkit-transform: rotate(0deg); }
+		100% { -webkit-transform: rotate(360deg); }
+	}
+
+	@keyframes spin {
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(360deg); }
+	}
 
