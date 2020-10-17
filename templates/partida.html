@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Pesquisando partida | Gamers Club - Ban Checker | Biqueirao.xyz</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" />
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+	<link rel="shortcut icon" href="https://hackertyper.net/img/favicon.ico">
+	<link href="https://fonts.googleapis.com/css?family=Teko|Poppins|Comfortaa|Open+Sans" rel="stylesheet">
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='main.js') }}" ></script>
+	<!-- adsense lul -->
+	<script data-ad-client="ca-pub-1348364283847032" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+<body>
+	<style type="text/css"> 
+		@media screen and (max-width: 1024px)
+		{
+			.grid-container {
+				grid-template-columns: repeat(2, 1fr) !important;
+			}
+
+			.card-container {
+				min-width: 250px;
+			}
+		}
+
+		.textfix{
+			display: -webkit-box;
+			max-width: 150px;
+			-webkit-line-clamp: 1;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		
+		h6 {
+			font-size: 1rem;
+		}
+
+		.card-container {
+			height: auto;
+			width: 100%;
+		    padding: 1.5rem;
+		    border-radius: 16px;
+		    box-shadow: 0px 10px 20px -10px rgba(0,0,0,0.75);
+			 background: #17141d; 
+			/*background: #212234;*/
+		    box-shadow: -1rem 0 3rem #000;
+		    display: flex;
+		    flex-direction: column;
+		    align-items: center;
+		    transition: .2s;
+		    margin: 0;
+		    scroll-snap-align: start;
+		    clear: both;
+		    position: relative;
+		}
+
+		.skills {
+			background-color: transparent !important;
+		}
+
+		.card-container:hover {
+		    transform: translateY(-1rem);
+		}
+
+		.grid-container {
+			margin: 50px 250px;
+			display: grid;
+			grid-template-columns: repeat(5, 1fr);
+			grid-template-rows: repeat(2, 1fr);
+			gap: 50px 5px;
+		}
+	</style>
+	{% include 'navbar.html' %}
+	<h1 class="h" style="color:#b3b8bd">https://biqueirao.xyz/partida/{{ steam64orsteamid }}/</h1>
+	<section class="grid-container">
+		{% for player in players %}
+			{% if player.error_text %}
+			<div class="card-container">
+				<img class="round" src="{{ player.avatar }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/profile-v2/default-user-profile.jpg'" alt="user" />
+				{% if player.vac == 1 %}
+				<h3 style="margin-top: 100px;margin-bottom: 0px;"><a class="banido textfix" title="{{ player.name }}">{{ player.name }}</a></h3>
+				{% else %}
+				<h3 style="margin-top: 100px;margin-bottom: 0px;"><a class="textfix" title="{{ player.name }}"style="text-decoration: none;color: #c8c8c8;">{{ player.name }}</a></h3>
+				{% endif %}
+				<h4 style="margin-bottom: 5px;">{{ player.error_text }}</h4>
+				{% if player.vac == 1 %}
+				<span style="color: #fff;background-color: #5C161D;border-radius: 3px;font-size: 14px;font-weight: bold;padding: 3px 7px;margin-top: 26px;">BAN VAC</span>
+				{% else %}
+				<span style="color: #fff;background-color: rebeccapurple;border-radius: 3px;font-size: 14px;font-weight: bold;padding: 3px 7px;margin-top: 26px;">SEM BAN</span>
+				{% endif %}
+			</div>
+			{% else %}
+			<div class="card-container">
+				<span title="{{ player.country }}" class="card-base-country" data-tip-text="{{ player.country }}"><img src="https://gamersclub.com.br/assets/images/flags/lobby/{{ player.flag }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/flags/lobby/br.png'" alt="{{ player.country }}"></span>
+				<img class="round" src="{{ player.avatar }}" onerror="this.src = 'https://gamersclub.com.br/assets/images/profile-v2/default-user-profile.jpg'" alt="user" />
+				{% if player.isBanned == True %}
+				<h3 style="margin-top: 100px;margin-bottom: 27px;"><a href='/profiles/{{ player.steam }}/' title="{{ player.name }}" target="_blank" class="banido textfix" >{{ player.name }}</a></h3>
+				{% else %} 
+				<h3 style="margin-top: 100px;margin-bottom: 27px;"><a href='/profiles/{{ player.steam }}/' title="{{ player.name }}" target="_blank" class="textfix" style="text-decoration: none;color: #fff;">{{ player.name }}</a></h3>
+				{% endif %}
+				<span class="new-badge new-level-{{ player.lvl }}" style="background-image: url(https://gamersclub.com.br/assets/images/level/{{player.lvl}}.svg);background-repeat: no-repeat;background-position: center center;background-size: cover;">
+				<div class="lvl-value">{{ player.lvl }}</div>
+				</span>
+				<h6>Skill Level</h6>
+				{% if player.isBanned == True %}
+				<span style="color: #fff;background-color: #5C161D;border-radius: 3px;font-size: 14px;font-weight: bold;padding: 3px 7px;">BANIDO</span>
+				{% else %} 
+				<span style="color: #fff;background-color: rebeccapurple;border-radius: 3px;font-size: 14px;font-weight: bold;padding: 3px 7px;">SEM BAN</span>
+				{% endif %}
+			</div>
+			{% endif %}
+		{% endfor %}
+	</section>
+	<div id="kz" class="logo1"><a href="/profiles/76561198047241875/">kinz</a> & <a href="/profiles/76561198888066058/" >dex</a></div>
+	<script>
+		history.pushState({}, null, "/partida/{{steam64orsteamid}}/");
+	</script>
+</body>
+</html>
