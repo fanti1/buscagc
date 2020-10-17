@@ -52,22 +52,3 @@ $(document).ready(function( )  {
 		}
 	});
 });
-
-function Check()
-{
-	var regx = /STEAM_[0-5]:[01]:\d+/g;
-	var value = $('textarea[name=content]').val( );
-	if ( regx.test( value ) )
-	{
-		notSending = false;
-		console.log(notSending);
-		return true;
-	}
-	else
-	{
-		notSending = true;
-		console.log(notSending);
-		return false;
-		
-	}
-}
