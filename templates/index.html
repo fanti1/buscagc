@@ -133,6 +133,15 @@
 	<div id="kz" class="logo1"><a href="/profiles/76561198047241875/">kinz</a> & <a href="/profiles/76561198888066058/" >dex</a></div>
 	<script>
 		history.pushState({}, null, "/profiles/{{steam64orsteamid}}/");
+
+		var clipboardArranque = new ClipboardJS('#copy-button');
+		clipboardArranque.on('success', function(e) {
+			e.trigger.innerHTML = '<i class="fa fa-check" aria-hidden="true"></i> Copiado!';
+			setTimeout(function() {
+				e.trigger.innerHTML = '<i class="fa fa-clipboard" aria-hidden="true"></i> Clique para copiar';
+			}, 2000);
+			e.clearSelection();
+		});
 	</script>
 </body>
 </html>
