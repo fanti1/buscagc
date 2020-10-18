@@ -275,7 +275,7 @@
 		<div class="cancel-icon">
 			<span class="fas fa-times"></span>
 		</div> -->
-		<form action="#" class="">
+		<form action="{{ url_for('busca') }}" method="post">
 			<input id="textbox" title="Você deve pesquisar por SteamID ou Steam URL." type="search" class="search-data" placeholder="Procure por SteamID ou Steam URL" name="url_busca" pattern="^https?://(?:www\.)?steamcommunity\.com/(id/([^/\s]*)|profiles/([^/\s]*))/?" required/>
 			<button type="submit" id="keke" class="fas fa-search" aria-hidden="true"></button>
 		</form>

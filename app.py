@@ -50,6 +50,9 @@ def busca():
 def red():
     return busca()
 
+@app.route('/profiles/', methods=['GET'])
+def red1():
+    return busca()
 
 @app.route('/partida/<matchid>/', methods=['GET'])
 def grab_match_hash(matchid):
@@ -65,10 +68,6 @@ def grab_match_hash(matchid):
         else:
             return busca()
 
-
-@app.route('/profiles/', methods=['GET'])
-def red1():
-    return busca()
 
 @app.route('/profiles/<steamid>/', methods=['GET'])
 def fuckoff(steamid):
