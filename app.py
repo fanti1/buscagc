@@ -11,7 +11,7 @@ app = Flask(__name__)
 steamapikey = "FDBB490D0187D0AA68E36B5C28CC2657"
 session = requests.session()
 jar = requests.cookies.RequestsCookieJar()
-jar.set('gclubsess', '794fab5fc13d8ca21edf4648dd6af935b0f52598')  # 03.01.2021
+jar.set('gclubsess', '7f5497109658a2985f9f5f34ca0021c46479fb02')  # 15.01.2021
 session.cookies = jar
 
 headers = {
@@ -181,14 +181,18 @@ def steamid_to_64bit(steamid):
 def get_multi_profiles(text):
     global hashkey
     steam = re.findall(r'\STEAM_[0-5]:[01]:\d+', text)
-    nicks = re.findall(r'"([^"]*)"', text)
+    nicks = re.findall(r'"([^"]*)" STEAM_', text)
 
     names = [nomes for nomes in nicks]
     steams = [steamid_to_64bit(steamid) for steamid in steam]
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
         future_to_url = [executor.submit(consulta_url, url, nick, "True") for url, nick in zip(steams, names)]
-        players = [(future.result()) for future in concurrent.futures.as_completed(future_to_url)]
+    
+        try:
+           players = [(future.result()) for future in concurrent.futures.as_completed(future_to_url)]
+        except Exception as exc:
+            print('%r generated an exception:' % (exc))
 
         hashkey = get_hash()
         with open(f'cache/{hashkey}.txt', 'w') as json_file:
@@ -225,7 +229,7 @@ def consulta_url(profile_url, nickname='', multiSearch='False'):
     player = {}
 
     if 'True' in multiSearch:
-        page = session.get(f'https://gamersclub.com.br/buscar?busca=http://steamcommunity.com/profiles/{profile_url}', headers=headers, timeout=(10, None))
+        page = session.get(f'https://gamersclub.com.br/buscar?busca=http://steamcommunity.com/profiles/{profile_url}', headers=headers, timeout=(10, None), stream=True)
         isAdmin = False
     else:
         page = session.get(f'https://gamersclub.com.br/buscar?busca={profile_url}', headers=headers, timeout=(5, None), stream=True)
@@ -360,8 +364,8 @@ if __name__ == '__main__':
         # original start server:
         # ssl path
         context = SSL.Context(SSL.SSLv23_METHOD)
-        context.use_privatekey_file('/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
-        context.use_certificate_chain_file('/etc/letsencrypt/archive/biqueirao.xyz/fullchain2.pem')
-        context.use_certificate_file('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem')
-        context = ('/etc/letsencrypt/archive/biqueirao.xyz/cert2.pem', '/etc/letsencrypt/archive/biqueirao.xyz/privkey2.pem')
+        context.use_privatekey_file('/etc/letsencrypt/archive/biqueirao.xyz/privkey4.pem')
+        context.use_certificate_chain_file('/etc/letsencrypt/archive/biqueirao.xyz/fullchain4.pem')
+        context.use_certificate_file('/etc/letsencrypt/archive/biqueirao.xyz/cert4.pem')
+        context = ('/etc/letsencrypt/archive/biqueirao.xyz/cert4.pem', '/etc/letsencrypt/archive/biqueirao.xyz/privkey4.pem')
         app.run(host='0.0.0.0', port=443, debug=False, ssl_context=context)
