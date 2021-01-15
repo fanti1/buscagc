@@ -12,11 +12,15 @@ $(document).ready(function( )  {
 
 			$( "#mut").toggle();
 			$( "#loader" ).fadeIn( "slow" );
-			$( "#change" ).text( "BUSCANDO" );
+			$( "#loaded" ).show();
+			$( "#change" ).text( "BUSCANDO..." );
 			$( "#keke" ).prop("disabled", true);
 			$( ".nav-items li a:first-child" ).attr("href", "javascript:void(0)");
 
 			this.submit( );
+		}
+		else {
+			$( "#asdf" ).toggle();
 		}
     });
 

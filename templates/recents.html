@@ -16,11 +16,28 @@
 </head>
 <body>
 	<style type="text/css">
+        .card-container {
+			color: #B3B8CD;
+			height: auto;
+			width: 100%;
+			padding: 1.5rem;
+			border-radius: 16px;
+			background: #17141d;
+			box-shadow: -1rem 0 3rem #000;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			transition: .2s;
+			margin: 0;
+			scroll-snap-align: start;
+			clear: both;
+			position: relative;
+		}
 
 		@media screen and (max-width: 1200px){
 			body{
 				display: flex;
-				zoom: 0.4;
+				zoom: 0.7;
 			}
 
 			.card-list {
@@ -76,26 +93,8 @@
 
 		.card-list {
 		    display: flex;
-			padding: 5rem 15em;
+			padding: 5rem 15em 3rem 15em;
 			overflow-x: scroll;
-		}
-
-		.card-container {
-			
-			height: auto;
-			width: 100%;
-		    padding: 1.5rem;
-		    border-radius: 16px;
-		    background: #17141d;
-		    box-shadow: -1rem 0 3rem #000;
-		    display: flex;
-		    flex-direction: column;
-		    align-items: center;
-		    transition: .2s;
-		    margin: 0;
-		    scroll-snap-align: start;
-		    clear: both;
-		    position: relative;
 		}
 
 		.skills {
