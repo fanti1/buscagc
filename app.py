@@ -11,7 +11,7 @@ app = Flask(__name__)
 steamapikey = "FDBB490D0187D0AA68E36B5C28CC2657"
 session = requests.session()
 jar = requests.cookies.RequestsCookieJar()
-jar.set('gclubsess', '7f5497109658a2985f9f5f34ca0021c46479fb02')  # 15.01.2021
+jar.set('gclubsess', '5f28a079c80746c0f94263c8121aa074769f79da')  # 15.01.2021
 session.cookies = jar
 
 headers = {
